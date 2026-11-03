@@ -25,7 +25,7 @@ npm run build
 npm run dev
 ```
 
-## Synchroniser la branche frontend
+## Synchronisation des branches
 
 Depuis la branche `front` :
 
