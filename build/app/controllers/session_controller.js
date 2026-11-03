@@ -1,0 +1,18 @@
+import User from '#models/user';
+import { loginValidator } from '#validators/user';
+export default class SessionController {
+    async create({ inertia }) {
+        return inertia.render('auth/login', {});
+    }
+    async store({ request, auth, response }) {
+        const { email, password } = await request.validateUsing(loginValidator);
+        const user = await User.verifyCredentials(email, password);
+        await auth.use('web').login(user);
+        response.redirect().toRoute('dashboard');
+    }
+    async destroy({ auth, response }) {
+        await auth.use('web').logout();
+        response.redirect().toRoute('session.create');
+    }
+}
+//# sourceMappingURL=session_controller.js.map

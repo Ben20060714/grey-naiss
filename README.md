@@ -21,9 +21,15 @@ Depuis votre terminal, faites :
 git clone https://github.com/Ben20060714/grey-naiss.git
 cd grey-naiss
 npm install
+cp .env.example .env
+node ace generate:key
 npm run build
 npm run dev
 ```
+
+Le fichier `.env` contient la configuration locale du serveur et ne doit pas
+être commité. La commande `node ace generate:key` génère une clé sécurisée et
+l’ajoute à ce fichier.
 
 ## Synchronisation des branches
 
