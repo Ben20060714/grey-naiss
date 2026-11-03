@@ -9,7 +9,7 @@ Grey-naiss est un lorem ipsum dolor sit amet adipiscing elit quam, arium lor tat
 
 Chaque développeur travaille sur la branche correspondant à son rôle :
 
-- `front` : développement frontend — branche de travail de Ben-kaïl.
+- `front` : développement frontend.
 - `back` : développement backend.
 - `serveur` : configuration et développement serveur/infrastructure.
 
