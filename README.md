@@ -55,7 +55,7 @@ git push origin serveur
 ```
 
 Cette procédure permet de récupérer les dernières modifications de `main` et
-de mettre à jour la branche frontend distante.
+de mettre à jour la branche qui vous est assignée.
 
 ## Collaborateurs
 
