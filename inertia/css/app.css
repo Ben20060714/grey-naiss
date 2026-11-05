@@ -2204,6 +2204,113 @@ input {
   margin-top: 0;
   border-top: 0;
 }
+/* Palette des surfaces municipales, partagée par les deux thèmes. */
+:root {
+  --surface-municipale: #fffdf9;
+  --surface-municipale-alt: #f4efe7;
+  --surface-municipale-info: #edf2f0;
+  --surface-municipale-carte: #ffffff;
+  --bordure-municipale: #e8e0d5;
+  --texte-municipal: #0b2c40;
+  --texte-municipal-secondaire: #626c6a;
+  --ocre-texte: #956018;
+}
+:root[data-theme='dark'] {
+  --surface-municipale: #111114;
+  --surface-municipale-alt: #191a1e;
+  --surface-municipale-info: #172323;
+  --surface-municipale-carte: #15161a;
+  --bordure-municipale: #2c2e33;
+  --texte-municipal: #ededee;
+  --texte-municipal-secondaire: #b5bac0;
+  --ocre-texte: #f1c279;
+}
+.section--services,
+.section--contact {
+  background: var(--surface-municipale);
+}
+.section--actualites {
+  background: var(--surface-municipale-alt);
+}
+.section--verification {
+  background: var(--surface-municipale-info);
+}
+.carte-service,
+.carte-actualite {
+  background: var(--surface-municipale-carte);
+}
+.carte-service {
+  border-color: var(--bordure-municipale);
+}
+.entete-section h2,
+.contact h2,
+.carte-service__titre,
+.carte-actualite h3,
+.contact-page h2,
+.verification-publique h2 {
+  color: var(--texte-municipal);
+}
+.carte-actualite__meta,
+.sur-titre--sombre {
+  color: var(--ocre-texte);
+}
+.carte-actualite__contenu > p:not(.carte-actualite__meta),
+.verification-publique p:not(.sur-titre),
+.contact-page__intro {
+  color: var(--texte-municipal-secondaire);
+}
+.verification-publique__etat {
+  border-color: var(--bordure-municipale);
+  color: var(--texte-municipal-secondaire);
+}
+.encart-information {
+  background: color-mix(in srgb, var(--ocre-mairie) 12%, var(--surface-municipale));
+  color: var(--texte-municipal);
+}
+.encart-information p,
+.liste-coordonnees p,
+.mention-page {
+  color: var(--texte-municipal-secondaire);
+}
+.liste-coordonnees,
+.liste-coordonnees > div {
+  border-color: var(--bordure-municipale);
+}
+.liste-coordonnees strong {
+  color: var(--texte-municipal);
+}
+.contact__infos {
+  color: var(--texte-municipal-secondaire);
+}
+.contact__infos strong {
+  color: var(--texte-municipal);
+}
+.pied-de-page {
+  background: var(--surface-municipale-alt);
+  color: var(--texte-municipal);
+}
+.pied-de-page__interieur > span {
+  color: var(--texte-municipal-secondaire);
+}
+.navigation-principale .lien-souligne,
+.lien-souligne {
+  color: var(--texte-municipal);
+}
+.navigation-principale .lien-souligne:hover,
+.lien-souligne:hover {
+  color: var(--ocre-texte);
+}
+.alerte-formulaire--erreur {
+  background: color-mix(in srgb, #c0392b 18%, var(--surface-municipale));
+  color: #c0392b;
+}
+.indicateur-agent--hors-ligne .indicateur-agent__icone {
+  background: color-mix(in srgb, #d29a43 18%, var(--surface-municipale-carte));
+}
+.navigation-principale--ouverte {
+  background: var(--surface-municipale-carte);
+  color: var(--texte-municipal);
+}
 @media (max-width: 820px) {
   .accueil-hero__repere {
     display: block;
