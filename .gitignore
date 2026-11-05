@@ -4,7 +4,12 @@ node_modules/
 # Build output
 dist/
 dist-ssr/
+# Les fichiers générés restent ignorés, mais les images frontend sont versionnées.
 public/
+!public/
+public/*
+!public/images/
+!public/images/**
 .adonisjs/
 build/
 

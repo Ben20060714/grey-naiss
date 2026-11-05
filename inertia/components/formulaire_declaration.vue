@@ -152,13 +152,15 @@ function choisirDocument(event: Event) {
       <button
         class="bloc-formulaire__titre"
         type="button"
+        :aria-expanded="sectionOuverte === 1"
+        aria-controls="contenu-section-1"
         @click="sectionOuverte = sectionOuverte === 1 ? 0 : 1"
       >
         <span class="numero-section">01</span
         ><span><strong>Enfant</strong><small>Identité et naissance</small></span
         ><ChevronDown :size="19" />
       </button>
-      <div v-if="sectionOuverte === 1" class="bloc-formulaire__contenu">
+      <div v-show="sectionOuverte === 1" id="contenu-section-1" class="bloc-formulaire__contenu">
         <div class="grille-champs grille-champs--deux">
           <label
             class="champ-formulaire"
@@ -229,6 +231,8 @@ function choisirDocument(event: Event) {
       <button
         class="bloc-formulaire__titre"
         type="button"
+        :aria-expanded="sectionOuverte === section.numero"
+        :aria-controls="'contenu-section-' + section.numero"
         @click="sectionOuverte = sectionOuverte === section.numero ? 0 : section.numero"
       >
         <span class="numero-section">0{{ section.numero }}</span
@@ -237,7 +241,11 @@ function choisirDocument(event: Event) {
           ><small>{{ section.sousTitre }}</small></span
         ><ChevronDown :size="19" />
       </button>
-      <div v-if="sectionOuverte === section.numero" class="bloc-formulaire__contenu">
+      <div
+        v-show="sectionOuverte === section.numero"
+        :id="'contenu-section-' + section.numero"
+        class="bloc-formulaire__contenu"
+      >
         <template v-if="section.numero === 2"
           ><div class="grille-champs grille-champs--deux">
             <label

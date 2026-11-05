@@ -14,6 +14,7 @@ import {
 } from 'lucide-vue-next'
 import { defineAsyncComponent, onBeforeUnmount, onMounted, ref } from 'vue'
 import MarketingLayout from '~/layouts/marketing.vue'
+// import imageLubumbashi from '~/assets/lubumbashi-hero.svg'
 
 const PageActualites = defineAsyncComponent(() => import('~/components/page_actualites.vue'))
 const PageContact = defineAsyncComponent(() => import('~/components/page_contact.vue'))
@@ -136,7 +137,19 @@ onBeforeUnmount(() => window.removeEventListener('popstate', lirePage))
                   /></a>
                 </div>
               </div>
-              <div class="accueil-hero__repere" aria-label="Informations pratiques de la mairie">
+              <div class="accueil-hero__repere">
+                <!--
+                <figure class="accueil-hero__visuel">
+                  <img
+                    :src="imageLubumbashi"
+                    alt="Illustration de Lubumbashi au lever du jour"
+                    width="900"
+                    height="760"
+                    fetchpriority="high"
+                  />
+                  <figcaption>Lubumbashi · Haut-Katanga</figcaption>
+                </figure>
+                -->
                 <div class="repere-carte">
                   <span class="repere-carte__marqueur"><MapPin :size="21" /></span>
                   <div>

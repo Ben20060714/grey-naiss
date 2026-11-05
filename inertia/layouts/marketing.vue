@@ -24,7 +24,7 @@ function fermerMenu() {
         type="button"
         :aria-expanded="menuOuvert"
         aria-controls="navigation-principale"
-        aria-label="Ouvrir le menu"
+        :aria-label="menuOuvert ? 'Fermer le menu' : 'Ouvrir le menu'"
         @click="menuOuvert = !menuOuvert"
       >
         <X v-if="menuOuvert" :size="22" /><Menu v-else :size="22" />
