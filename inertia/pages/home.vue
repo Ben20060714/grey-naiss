@@ -106,17 +106,43 @@ function lirePage() {
     : 'accueil'
 }
 
+function intercepterNavigation(evenement: MouseEvent) {
+  const cible = evenement.target
+  if (!(cible instanceof Element)) return
+
+  const lien = cible.closest<HTMLAnchorElement>('a[href]')
+  if (!lien || lien.target === '_blank' || evenement.metaKey || evenement.ctrlKey) return
+
+  const url = new URL(lien.href, window.location.href)
+  if (
+    url.origin !== window.location.origin ||
+    url.pathname !== '/' ||
+    !url.searchParams.has('page')
+  ) {
+    return
+  }
+
+  evenement.preventDefault()
+  window.history.pushState({}, '', url)
+  lirePage()
+  window.scrollTo({ top: 0, behavior: 'smooth' })
+}
+
 onMounted(() => {
   lirePage()
   window.addEventListener('popstate', lirePage)
+  window.addEventListener('click', intercepterNavigation)
 })
 
-onBeforeUnmount(() => window.removeEventListener('popstate', lirePage))
+onBeforeUnmount(() => {
+  window.removeEventListener('popstate', lirePage)
+  window.removeEventListener('click', intercepterNavigation)
+})
 </script>
 
 <template>
   <MarketingLayout>
-    <Transition name="transition-page" mode="out-in">
+    <Transition name="transition-page">
       <div :key="pageActuelle">
         <main v-if="pageActuelle === 'accueil'">
           <section class="accueil-hero" aria-labelledby="titre-principal">
