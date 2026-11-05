@@ -865,20 +865,6 @@ input {
   }
 }
 
-/* Transition sans transparence : le fond de la page ne traverse plus l’animation. */
-.transition-page-enter-active,
-.transition-page-leave-active {
-  opacity: 1;
-  transition: transform 0.24s cubic-bezier(0.2, 0, 0, 1);
-}
-.transition-page-enter-from {
-  opacity: 1;
-  transform: translateY(8px);
-}
-.transition-page-leave-to {
-  opacity: 1;
-  transform: translateY(-8px);
-}
 .page-chargement {
   min-height: 100vh;
   background: var(--surface-municipale);
@@ -904,13 +890,6 @@ input {
 .page-erreur span {
   color: var(--texte-municipal-secondaire);
 }
-@media (prefers-reduced-motion: reduce) {
-  .transition-page-enter-active,
-  .transition-page-leave-active {
-    transition: none;
-  }
-}
-
 /* Formulaire de déclaration — données conservées localement */
 .etiquette-locale {
   display: inline-flex;
@@ -972,6 +951,16 @@ input {
 .bloc-formulaire--ouvert {
   border-color: var(--line-2);
   box-shadow: 0 5px 16px rgba(10, 10, 11, 0.04);
+}
+.bloc-formulaire--erreur {
+  border-color: #f1a9a0;
+}
+.section-erreur-texte {
+  display: block;
+  margin-top: 3px;
+  color: #c0392b;
+  font-weight: 600;
+  font-size: 11px;
 }
 .bloc-formulaire__titre {
   display: grid;
@@ -1322,53 +1311,6 @@ input {
 .section {
   content-visibility: auto;
   contain-intrinsic-size: 1px 520px;
-}
-.accueil-hero__texte,
-.accueil-hero__repere {
-  animation: apparition-douce 0.65s cubic-bezier(0.2, 0, 0, 1) both;
-}
-.accueil-hero__repere {
-  animation-delay: 0.1s;
-}
-.carte-service,
-.carte-actualite,
-.evenement {
-  animation: apparition-douce 0.5s cubic-bezier(0.2, 0, 0, 1) both;
-}
-.carte-service:nth-child(2),
-.carte-actualite:nth-child(2),
-.evenement:nth-child(2) {
-  animation-delay: 0.08s;
-}
-.carte-service:nth-child(3),
-.carte-actualite:nth-child(3),
-.evenement:nth-child(3) {
-  animation-delay: 0.16s;
-}
-.carte-service:nth-child(4) {
-  animation-delay: 0.24s;
-}
-@keyframes apparition-douce {
-  from {
-    opacity: 0;
-    transform: translateY(12px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-@media (prefers-reduced-motion: reduce) {
-  .transition-page-enter-active,
-  .transition-page-leave-active,
-  .accueil-hero__texte,
-  .accueil-hero__repere,
-  .carte-service,
-  .carte-actualite,
-  .evenement {
-    animation: none;
-    transition: none;
-  }
 }
 .page-publique {
   min-height: 70vh;

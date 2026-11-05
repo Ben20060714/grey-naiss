@@ -23,6 +23,7 @@ type DonneesDeclaration = {
 }
 
 const cleBrouillon = 'mairie-brouillon-naissance'
+const champFichierRef = ref<HTMLInputElement | null>(null)
 const donnees = reactive<DonneesDeclaration>({
   prenomEnfant: '',
   nomEnfant: '',
@@ -46,6 +47,32 @@ const erreurs = ref<Partial<Record<keyof DonneesDeclaration, string>>>({})
 const messageBrouillon = ref('')
 const declarationLocale = ref(false)
 const sectionOuverte = ref(1)
+
+const sectionParChamp: Record<keyof DonneesDeclaration, number> = {
+  prenomEnfant: 1,
+  nomEnfant: 1,
+  dateNaissance: 1,
+  lieuNaissance: 1,
+  sexeEnfant: 1,
+  prenomMere: 2,
+  nomMere: 2,
+  identifiantMere: 2,
+  prenomPere: 3,
+  nomPere: 3,
+  identifiantPere: 3,
+  prenomDeclarant: 4,
+  nomDeclarant: 4,
+  lienDeclarant: 4,
+  numeroPiece: 4,
+  referenceMedicale: 5,
+  nomDocument: 5,
+}
+
+function sectionContientErreurs(numero: number): boolean {
+  return (Object.keys(erreurs.value) as Array<keyof DonneesDeclaration>).some(
+    (champ) => sectionParChamp[champ] === numero
+  )
+}
 
 const dateMaximale = computed(() => new Date().toISOString().slice(0, 10))
 const progression = computed(() => {
@@ -98,6 +125,9 @@ function supprimerBrouillon() {
   Object.keys(donnees).forEach((champ) => {
     donnees[champ as keyof DonneesDeclaration] = ''
   })
+  if (champFichierRef.value) {
+    champFichierRef.value.value = ''
+  }
   erreurs.value = {}
   messageBrouillon.value = 'Le brouillon local a été supprimé.'
   declarationLocale.value = false
@@ -120,11 +150,15 @@ function validerFormulaire() {
   champsObligatoires.forEach(([champ, message]) => {
     if (!donnees[champ]) nouvellesErreurs[champ] = message
   })
-  if (donnees.dateNaissance && donnees.dateNaissance > dateMaximale.value)
+  if (donnees.dateNaissance && donnees.dateNaissance > dateMaximale.value) {
     nouvellesErreurs.dateNaissance = 'La date ne peut pas être dans le futur.'
+  }
   erreurs.value = nouvellesErreurs
-  if (Object.keys(nouvellesErreurs).length) {
-    sectionOuverte.value = 1
+  const champsEnErreur = Object.keys(nouvellesErreurs) as Array<keyof DonneesDeclaration>
+  if (champsEnErreur.length) {
+    // Détecte et ouvre automatiquement la première section comportant une erreur
+    const premierChamp = champsEnErreur[0]
+    sectionOuverte.value = sectionParChamp[premierChamp] ?? 1
     return
   }
   sauvegarderBrouillon()
@@ -161,7 +195,13 @@ function choisirDocument(event: Event) {
       <Save :size="15" /> {{ messageBrouillon }}
     </div>
 
-    <section class="bloc-formulaire" :class="{ 'bloc-formulaire--ouvert': sectionOuverte === 1 }">
+    <section
+      class="bloc-formulaire"
+      :class="{
+        'bloc-formulaire--ouvert': sectionOuverte === 1,
+        'bloc-formulaire--erreur': sectionContientErreurs(1),
+      }"
+    >
       <button
         class="bloc-formulaire__titre"
         type="button"
@@ -169,9 +209,15 @@ function choisirDocument(event: Event) {
         aria-controls="contenu-section-1"
         @click="sectionOuverte = sectionOuverte === 1 ? 0 : 1"
       >
-        <span class="numero-section">01</span
-        ><span><strong>Enfant</strong><small>Identité et naissance</small></span
-        ><ChevronDown :size="19" />
+        <span class="numero-section">01</span>
+        <span>
+          <strong>Enfant</strong>
+          <small>Identité et naissance</small>
+          <small v-if="sectionContientErreurs(1)" class="section-erreur-texte"
+            >Champs obligatoires à compléter</small
+          >
+        </span>
+        <ChevronDown :size="19" />
       </button>
       <div v-show="sectionOuverte === 1" id="contenu-section-1" class="bloc-formulaire__contenu">
         <div class="grille-champs grille-champs--deux">
@@ -239,7 +285,10 @@ function choisirDocument(event: Event) {
       ]"
       :key="section.numero"
       class="bloc-formulaire"
-      :class="{ 'bloc-formulaire--ouvert': sectionOuverte === section.numero }"
+      :class="{
+        'bloc-formulaire--ouvert': sectionOuverte === section.numero,
+        'bloc-formulaire--erreur': sectionContientErreurs(section.numero),
+      }"
     >
       <button
         class="bloc-formulaire__titre"
@@ -248,11 +297,15 @@ function choisirDocument(event: Event) {
         :aria-controls="'contenu-section-' + section.numero"
         @click="sectionOuverte = sectionOuverte === section.numero ? 0 : section.numero"
       >
-        <span class="numero-section">0{{ section.numero }}</span
-        ><span
-          ><strong>{{ section.titre }}</strong
-          ><small>{{ section.sousTitre }}</small></span
-        ><ChevronDown :size="19" />
+        <span class="numero-section">0{{ section.numero }}</span>
+        <span>
+          <strong>{{ section.titre }}</strong>
+          <small>{{ section.sousTitre }}</small>
+          <small v-if="sectionContientErreurs(section.numero)" class="section-erreur-texte"
+            >Champs obligatoires à compléter</small
+          >
+        </span>
+        <ChevronDown :size="19" />
       </button>
       <div
         v-show="sectionOuverte === section.numero"
@@ -347,7 +400,11 @@ function choisirDocument(event: Event) {
               ><span>Justificatif <i>facultatif</i></span
               ><span class="zone-televersement"
                 ><Upload :size="18" /><span>{{ donnees.nomDocument || 'Choisir un document' }}</span
-                ><input type="file" accept=".pdf,.jpg,.jpeg,.png" @change="choisirDocument" /></span
+                ><input
+                  ref="champFichierRef"
+                  type="file"
+                  accept=".pdf,.jpg,.jpeg,.png"
+                  @change="choisirDocument" /></span
             ></label>
           </div>
           <p class="aide-formulaire">
