@@ -7,40 +7,49 @@ import {
   FileText,
   MapPin,
   Phone,
+  QrCode,
   Search,
   ShieldCheck,
   Users,
 } from 'lucide-vue-next'
+import { defineAsyncComponent, onBeforeUnmount, onMounted, ref } from 'vue'
 import MarketingLayout from '~/layouts/marketing.vue'
+
+const PageActualites = defineAsyncComponent(() => import('~/components/page_actualites.vue'))
+const PageContact = defineAsyncComponent(() => import('~/components/page_contact.vue'))
+const PageServices = defineAsyncComponent(() => import('~/components/page_services.vue'))
 
 type Service = { titre: string; description: string; icone: typeof FileText; ancre: string }
 type Actualite = { date: string; categorie: string; titre: string; description: string }
 type Evenement = { mois: string; jour: string; titre: string; lieu: string; heure: string }
+type PagePublique = 'accueil' | 'services' | 'actualites' | 'contact'
+
+const pageActuelle = ref<PagePublique>('accueil')
 
 const services: Service[] = [
   {
     titre: 'État civil',
     description: 'Actes, naissance, mariage et démarches liées à la famille.',
     icone: FileText,
-    ancre: '#services',
+    ancre: '/?page=services',
   },
   {
     titre: 'Démarches en ligne',
     description: 'Retrouvez les formulaires et les informations utiles.',
     icone: Search,
-    ancre: '#services',
+    ancre: '/?page=services',
   },
   {
     titre: 'Vie associative',
     description: 'Associations, équipements et initiatives citoyennes.',
     icone: Users,
-    ancre: '#vie-locale',
+    ancre: '/?page=actualites',
   },
   {
     titre: 'Signaler un problème',
     description: 'Une rue, un éclairage ou un espace public à nous signaler.',
     icone: ShieldCheck,
-    ancre: '#contact',
+    ancre: '/?page=contact',
   },
 ]
 
@@ -88,147 +97,200 @@ const evenements: Evenement[] = [
     heure: '08:00',
   },
 ]
+
+function lirePage() {
+  const pageDemandee = new URLSearchParams(window.location.search).get('page')
+  pageActuelle.value = ['services', 'actualites', 'contact'].includes(pageDemandee ?? '')
+    ? (pageDemandee as Exclude<PagePublique, 'accueil'>)
+    : 'accueil'
+}
+
+onMounted(() => {
+  lirePage()
+  window.addEventListener('popstate', lirePage)
+})
+
+onBeforeUnmount(() => window.removeEventListener('popstate', lirePage))
 </script>
 
 <template>
   <MarketingLayout>
-    <main>
-      <section class="accueil-hero" aria-labelledby="titre-principal">
-        <div class="conteneur accueil-hero__contenu">
-          <div class="accueil-hero__texte">
-            <p class="sur-titre"><span class="point-vivant" /> Bienvenue sur le site officiel</p>
-            <h1 id="titre-principal">Votre mairie,<br /><em>à vos côtés.</em></h1>
-            <p class="accueil-hero__description">
-              Retrouvez vos services municipaux, les actualités de la ville et toutes les
-              informations utiles au quotidien.
-            </p>
-            <div class="accueil-hero__actions">
-              <a class="bouton bouton--clair" href="#services"
-                >Accéder aux démarches <ArrowRight :size="17"
-              /></a>
-              <a class="lien-discret" href="#contact">Nous contacter <ChevronRight :size="16" /></a>
-            </div>
-          </div>
-          <div class="accueil-hero__repere" aria-label="Informations pratiques de la mairie">
-            <div class="repere-carte">
-              <span class="repere-carte__marqueur"><MapPin :size="21" /></span>
-              <div>
-                <span class="repere-carte__etiquette">Hôtel de ville</span
-                ><strong>Ouvert aujourd’hui</strong><span>8h30 — 17h30</span>
-              </div>
-              <div class="repere-carte__ligne" />
-              <div class="repere-carte__coordonnees">
-                <span><Phone :size="14" /> 01 00 00 00 00</span
-                ><span><MapPin :size="14" /> 1, place de la République</span>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="accueil-hero__vague" aria-hidden="true" />
-      </section>
-
-      <section id="services" class="section section--services" aria-labelledby="titre-services">
-        <div class="conteneur">
-          <div class="entete-section">
-            <div>
-              <p class="sur-titre sur-titre--sombre">À votre service</p>
-              <h2 id="titre-services">Les démarches les plus demandées</h2>
-            </div>
-            <a class="lien-souligne" href="#contact"
-              >Voir tous les services <ArrowRight :size="16"
-            /></a>
-          </div>
-          <div class="grille-services">
-            <a
-              v-for="service in services"
-              :key="service.titre"
-              class="carte-service"
-              :href="service.ancre"
-              ><span class="carte-service__icone"><component :is="service.icone" :size="21" /></span
-              ><span class="carte-service__titre">{{ service.titre }}</span
-              ><span class="carte-service__description">{{ service.description }}</span
-              ><ArrowRight class="carte-service__fleche" :size="18"
-            /></a>
-          </div>
-        </div>
-      </section>
-
-      <section
-        id="vie-locale"
-        class="section section--actualites"
-        aria-labelledby="titre-actualites"
-      >
-        <div class="conteneur">
-          <div class="entete-section">
-            <div>
-              <p class="sur-titre sur-titre--sombre">La vie de la commune</p>
-              <h2 id="titre-actualites">Actualités de la ville</h2>
-            </div>
-            <a class="lien-souligne" href="#contact"
-              >Toutes les actualités <ArrowRight :size="16"
-            /></a>
-          </div>
-          <div class="grille-actualites">
-            <article v-for="actualite in actualites" :key="actualite.titre" class="carte-actualite">
-              <div class="carte-actualite__image" aria-hidden="true">
-                <span>{{ actualite.categorie.slice(0, 1) }}</span>
-              </div>
-              <div class="carte-actualite__contenu">
-                <p class="carte-actualite__meta">
-                  {{ actualite.categorie }} · {{ actualite.date }}
+    <Transition name="transition-page" mode="out-in">
+      <div :key="pageActuelle">
+        <main v-if="pageActuelle === 'accueil'">
+          <section class="accueil-hero" aria-labelledby="titre-principal">
+            <div class="conteneur accueil-hero__contenu">
+              <div class="accueil-hero__texte">
+                <p class="sur-titre"><span class="point-vivant" /> Site officiel de la ville</p>
+                <h1 id="titre-principal">Lubumbashi,<br /><em>à vos côtés.</em></h1>
+                <p class="accueil-hero__description">
+                  Retrouvez vos services municipaux, les actualités de la ville et toutes les
+                  informations utiles au quotidien.
                 </p>
-                <h3>{{ actualite.titre }}</h3>
-                <p>{{ actualite.description }}</p>
-                <a class="lien-souligne" href="#contact">Lire la suite <ArrowRight :size="15" /></a>
+                <div class="accueil-hero__actions">
+                  <a class="bouton bouton--clair" href="/?page=services"
+                    >Accéder aux démarches <ArrowRight :size="17"
+                  /></a>
+                  <a class="lien-discret" href="/?page=contact"
+                    >Nous contacter <ChevronRight :size="16"
+                  /></a>
+                </div>
               </div>
-            </article>
-          </div>
-        </div>
-      </section>
+              <div class="accueil-hero__repere" aria-label="Informations pratiques de la mairie">
+                <div class="repere-carte">
+                  <span class="repere-carte__marqueur"><MapPin :size="21" /></span>
+                  <div>
+                    <span class="repere-carte__etiquette">Mairie de Lubumbashi</span
+                    ><strong>Accueil municipal</strong><span>Horaires à consulter</span>
+                  </div>
+                  <div class="repere-carte__ligne" />
+                  <div class="repere-carte__coordonnees">
+                    <span><Phone :size="14" /> Coordonnées officielles</span
+                    ><span><MapPin :size="14" /> Lubumbashi, Haut-Katanga</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="accueil-hero__vague" aria-hidden="true" />
+          </section>
 
-      <section class="section section--agenda" aria-labelledby="titre-agenda">
-        <div class="conteneur agenda">
-          <div class="agenda__intro">
-            <p class="sur-titre sur-titre--clair">À noter dans vos agendas</p>
-            <h2 id="titre-agenda">Les prochains<br /><em>rendez-vous.</em></h2>
-            <p>
-              Conseils, rencontres et événements : la ville vous donne rendez-vous toute l’année.
-            </p>
-            <a class="bouton bouton--clair" href="#contact"
-              >Voir l’agenda <CalendarDays :size="17"
-            /></a>
-          </div>
-          <div class="liste-evenements">
-            <article v-for="evenement in evenements" :key="evenement.titre" class="evenement">
-              <div class="evenement__date">
-                <span>{{ evenement.mois }}</span
-                ><strong>{{ evenement.jour }}</strong>
+          <section id="services" class="section section--services" aria-labelledby="titre-services">
+            <div class="conteneur">
+              <div class="entete-section">
+                <div>
+                  <p class="sur-titre sur-titre--sombre">À votre service</p>
+                  <h2 id="titre-services">Les démarches les plus demandées</h2>
+                </div>
+                <a class="lien-souligne" href="/?page=services"
+                  >Voir tous les services <ArrowRight :size="16"
+                /></a>
               </div>
-              <div class="evenement__details">
-                <h3>{{ evenement.titre }}</h3>
-                <span><MapPin :size="14" /> {{ evenement.lieu }}</span>
+              <div class="grille-services">
+                <a
+                  v-for="service in services"
+                  :key="service.titre"
+                  class="carte-service"
+                  :href="service.ancre"
+                  ><span class="carte-service__icone"
+                    ><component :is="service.icone" :size="21" /></span
+                  ><span class="carte-service__titre">{{ service.titre }}</span
+                  ><span class="carte-service__description">{{ service.description }}</span
+                  ><ArrowRight class="carte-service__fleche" :size="18"
+                /></a>
               </div>
-              <span class="evenement__heure"><Clock3 :size="15" /> {{ evenement.heure }}</span>
-            </article>
-          </div>
-        </div>
-      </section>
+            </div>
+          </section>
 
-      <section id="contact" class="section section--contact" aria-labelledby="titre-contact">
-        <div class="conteneur contact">
-          <div>
-            <p class="sur-titre sur-titre--sombre">Une question ?</p>
-            <h2 id="titre-contact">La mairie vous répond.</h2>
-          </div>
-          <div class="contact__infos">
-            <p>Accueil de l’hôtel de ville</p>
-            <strong>01 00 00 00 00</strong><span>Du lundi au vendredi, de 8h30 à 17h30</span>
-          </div>
-          <a class="bouton bouton--sombre" href="mailto:contact@mairie.fr"
-            >Nous écrire <ArrowRight :size="17"
-          /></a>
-        </div>
-      </section>
-    </main>
+          <section
+            id="vie-locale"
+            class="section section--actualites"
+            aria-labelledby="titre-actualites"
+          >
+            <div class="conteneur">
+              <div class="entete-section">
+                <div>
+                  <p class="sur-titre sur-titre--sombre">La vie de la commune</p>
+                  <h2 id="titre-actualites">Actualités de la ville</h2>
+                </div>
+                <a class="lien-souligne" href="/?page=actualites"
+                  >Toutes les actualités <ArrowRight :size="16"
+                /></a>
+              </div>
+              <div class="grille-actualites">
+                <article
+                  v-for="actualite in actualites"
+                  :key="actualite.titre"
+                  class="carte-actualite"
+                >
+                  <div class="carte-actualite__image" aria-hidden="true">
+                    <span>{{ actualite.categorie.slice(0, 1) }}</span>
+                  </div>
+                  <div class="carte-actualite__contenu">
+                    <p class="carte-actualite__meta">
+                      {{ actualite.categorie }} · {{ actualite.date }}
+                    </p>
+                    <h3>{{ actualite.titre }}</h3>
+                    <p>{{ actualite.description }}</p>
+                    <a class="lien-souligne" href="/?page=actualites"
+                      >Lire la suite <ArrowRight :size="15"
+                    /></a>
+                  </div>
+                </article>
+              </div>
+            </div>
+          </section>
+
+          <section
+            id="verification"
+            class="section section--verification"
+            aria-labelledby="titre-verification"
+          >
+            <div class="conteneur verification-publique">
+              <div class="verification-publique__icone"><QrCode :size="28" /></div>
+              <div>
+                <p class="sur-titre sur-titre--sombre">Service public</p>
+                <h2 id="titre-verification">Vérifier un acte de naissance</h2>
+                <p>
+                  Un acte portant un QR code pourra être vérifié avec sa référence. Les informations
+                  personnelles ne sont jamais affichées dans le QR code.
+                </p>
+              </div>
+              <div class="verification-publique__etat">
+                <span class="point-etat" /> Service de vérification en préparation
+              </div>
+            </div>
+          </section>
+
+          <section class="section section--agenda" aria-labelledby="titre-agenda">
+            <div class="conteneur agenda">
+              <div class="agenda__intro">
+                <p class="sur-titre sur-titre--clair">À noter dans vos agendas</p>
+                <h2 id="titre-agenda">Les prochains<br /><em>rendez-vous.</em></h2>
+                <p>
+                  Conseils, rencontres et événements : la ville vous donne rendez-vous toute
+                  l’année.
+                </p>
+                <a class="bouton bouton--clair" href="/?page=actualites"
+                  >Voir l’agenda <CalendarDays :size="17"
+                /></a>
+              </div>
+              <div class="liste-evenements">
+                <article v-for="evenement in evenements" :key="evenement.titre" class="evenement">
+                  <div class="evenement__date">
+                    <span>{{ evenement.mois }}</span
+                    ><strong>{{ evenement.jour }}</strong>
+                  </div>
+                  <div class="evenement__details">
+                    <h3>{{ evenement.titre }}</h3>
+                    <span><MapPin :size="14" /> {{ evenement.lieu }}</span>
+                  </div>
+                  <span class="evenement__heure"><Clock3 :size="15" /> {{ evenement.heure }}</span>
+                </article>
+              </div>
+            </div>
+          </section>
+
+          <section id="contact" class="section section--contact" aria-labelledby="titre-contact">
+            <div class="conteneur contact">
+              <div>
+                <p class="sur-titre sur-titre--sombre">Une question ?</p>
+                <h2 id="titre-contact">La mairie vous répond.</h2>
+              </div>
+              <div class="contact__infos">
+                <p>Accueil de l’hôtel de ville</p>
+                <strong>Accueil municipal</strong
+                ><span>Les coordonnées seront publiées par la mairie.</span>
+              </div>
+              <a class="bouton bouton--sombre" href="/?page=services"
+                >Voir les services publics <ArrowRight :size="17"
+              /></a>
+            </div>
+          </section>
+        </main>
+        <PageServices v-else-if="pageActuelle === 'services'" />
+        <PageActualites v-else-if="pageActuelle === 'actualites'" />
+        <PageContact v-else />
+      </div>
+    </Transition>
   </MarketingLayout>
 </template>

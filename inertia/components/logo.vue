@@ -25,6 +25,6 @@ withDefaults(defineProps<{ size?: number }>(), { size: 32 })
           stroke-linecap="round"
         /></svg
     ></span>
-    <span class="logo-mairie__nom">Ville de<br /><strong>Montfleury</strong></span>
+    <span class="logo-mairie__nom">Mairie de<br /><strong>Lubumbashi</strong></span>
   </Link>
 </template>

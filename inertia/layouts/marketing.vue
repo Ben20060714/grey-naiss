@@ -35,9 +35,10 @@ function fermerMenu() {
         :class="{ 'navigation-principale--ouverte': menuOuvert }"
         aria-label="Navigation principale"
       >
-        <a href="#services" @click="fermerMenu">Services</a>
-        <a href="#vie-locale" @click="fermerMenu">Actualités</a>
-        <a href="#contact" @click="fermerMenu">Contact</a>
+        <a href="/?page=accueil" @click="fermerMenu">Accueil</a>
+        <a href="/?page=services" @click="fermerMenu">Services</a>
+        <a href="/?page=actualites" @click="fermerMenu">Actualités</a>
+        <a href="/?page=contact" @click="fermerMenu">Contact</a>
         <span class="navigation-principale__separateur" />
         <ThemeToggle />
         <template v-if="pageInertia.props.user"
@@ -59,8 +60,8 @@ function fermerMenu() {
   <footer class="pied-de-page">
     <div class="conteneur pied-de-page__interieur">
       <Logo :size="30" />
-      <p>Le site officiel de votre mairie</p>
-      <span>© 2025 Mairie — Tous droits réservés</span>
+      <p>Le site officiel de la mairie de Lubumbashi</p>
+      <span>© 2026 Mairie de Lubumbashi — Tous droits réservés</span>
     </div>
   </footer>
   <FlashToasts />

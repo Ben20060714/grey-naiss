@@ -5,41 +5,41 @@ import { Form, Link } from '@adonisjs/inertia/vue'
 
 <template>
   <AuthLayout>
-    <h1 class="auth__title">Create your account</h1>
-    <p class="auth__sub">Start building with the starter kit.</p>
+    <h1 class="auth__title">Demander un accès</h1>
+    <p class="auth__sub">Créez votre compte professionnel pour accéder aux outils autorisés.</p>
 
     <Form v-slot="{ processing, errors }" route="new_account.store">
       <div class="auth__form">
         <div class="field">
-          <label class="field__label" for="fullName">Full name</label>
+          <label class="field__label" for="fullName">Nom complet</label>
           <input
             id="fullName"
             name="fullName"
             type="text"
             class="field__input"
             autocomplete="name"
-            placeholder="Ada Lovelace"
+            placeholder="Nom et prénom"
             :aria-invalid="errors.fullName ? 'true' : 'false'"
           />
           <span v-if="errors.fullName" class="field__error">{{ errors.fullName }}</span>
         </div>
 
         <div class="field">
-          <label class="field__label" for="email">Email</label>
+          <label class="field__label" for="email">Adresse e-mail professionnelle</label>
           <input
             id="email"
             name="email"
             type="email"
             class="field__input"
             autocomplete="email"
-            placeholder="you@example.com"
+            placeholder="agent@mairie-lubumbashi.cd"
             :aria-invalid="errors.email ? 'true' : 'false'"
           />
           <span v-if="errors.email" class="field__error">{{ errors.email }}</span>
         </div>
 
         <div class="field">
-          <label class="field__label" for="password">Password</label>
+          <label class="field__label" for="password">Mot de passe</label>
           <input
             id="password"
             name="password"
@@ -53,7 +53,7 @@ import { Form, Link } from '@adonisjs/inertia/vue'
         </div>
 
         <div class="field">
-          <label class="field__label" for="passwordConfirmation">Confirm password</label>
+          <label class="field__label" for="passwordConfirmation">Confirmer le mot de passe</label>
           <input
             id="passwordConfirmation"
             name="passwordConfirmation"
@@ -74,14 +74,14 @@ import { Form, Link } from '@adonisjs/inertia/vue'
           :disabled="processing"
           :style="{ marginTop: '4px' }"
         >
-          {{ processing ? 'One moment…' : 'Create account' }}
+          {{ processing ? 'Envoi en cours…' : 'Envoyer la demande' }}
         </button>
       </div>
     </Form>
 
     <p class="auth__foot">
-      Already have an account?
-      <Link route="session.create" class="il">Sign in</Link>
+      Vous avez déjà un compte ?
+      <Link route="session.create" class="il">Se connecter</Link>
     </p>
   </AuthLayout>
 </template>
