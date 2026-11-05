@@ -3,7 +3,7 @@ import { House, LogOut } from 'lucide-vue-next'
 import { Form } from '@adonisjs/inertia/vue'
 import Logo from '~/components/logo.vue'
 import FlashToasts from '~/components/flash_toasts.vue'
-import ThemeToggle from '~/components/theme_toggle.vue'
+// import ThemeToggle from '~/components/theme_toggle.vue'
 import NavLink, { type NavItem } from '~/components/nav_link.vue'
 
 // Navigation visible dans l’espace réservé aux agents connectés.
@@ -15,7 +15,8 @@ const navigation: NavItem[] = [{ label: 'Dossiers de naissance', route: 'dashboa
     <div class="header__inner">
       <Logo :size="28" />
       <div class="header__right">
-        <ThemeToggle />
+        <!-- Option de thème désactivée : le site reste en mode clair. -->
+        <!-- <ThemeToggle /> -->
         <Form route="session.destroy">
           <button type="submit" class="btn btn--secondary btn--sm">
             <LogOut :size="15" /> Se déconnecter

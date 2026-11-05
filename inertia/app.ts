@@ -8,6 +8,11 @@ import { resolvePageComponent } from '@adonisjs/inertia/helpers'
 
 const nomApplication = import.meta.env.VITE_APP_NAME || 'Mairie de Lubumbashi'
 
+// Le mode sombre est désactivé pour cette version : le site reste en mode clair.
+if (typeof document !== 'undefined') {
+  document.documentElement.setAttribute('data-theme', 'light')
+}
+
 createInertiaApp({
   title: (title) => (title ? `${title} - ${nomApplication}` : nomApplication),
   resolve: (name) => {

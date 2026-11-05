@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import Logo from '~/components/logo.vue'
 import FlashToasts from '~/components/flash_toasts.vue'
-import ThemeToggle from '~/components/theme_toggle.vue'
+// import ThemeToggle from '~/components/theme_toggle.vue'
 </script>
 
 <template>
@@ -16,7 +16,8 @@ import ThemeToggle from '~/components/theme_toggle.vue'
 
     <aside class="auth__aside">
       <div class="auth__aside-top">
-        <ThemeToggle />
+        <!-- Option de thème désactivée : le site reste en mode clair. -->
+        <!-- <ThemeToggle /> -->
       </div>
 
       <p class="auth__quote">

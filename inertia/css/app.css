@@ -865,6 +865,52 @@ input {
   }
 }
 
+/* Transition sans transparence : le fond de la page ne traverse plus l’animation. */
+.transition-page-enter-active,
+.transition-page-leave-active {
+  opacity: 1;
+  transition: transform 0.24s cubic-bezier(0.2, 0, 0, 1);
+}
+.transition-page-enter-from {
+  opacity: 1;
+  transform: translateY(8px);
+}
+.transition-page-leave-to {
+  opacity: 1;
+  transform: translateY(-8px);
+}
+.page-chargement {
+  min-height: 100vh;
+  background: var(--surface-municipale);
+}
+.texte-accessible {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+.page-erreur {
+  display: grid;
+  min-height: 50vh;
+  place-content: center;
+  gap: 8px;
+  padding: 40px 24px;
+  background: var(--surface-municipale);
+  color: var(--texte-municipal);
+  text-align: center;
+}
+.page-erreur span {
+  color: var(--texte-municipal-secondaire);
+}
+@media (prefers-reduced-motion: reduce) {
+  .transition-page-enter-active,
+  .transition-page-leave-active {
+    transition: none;
+  }
+}
+
 /* Formulaire de déclaration — données conservées localement */
 .etiquette-locale {
   display: inline-flex;
@@ -1270,20 +1316,6 @@ input {
   .page-publique .section + .section {
     padding-top: 72px;
   }
-}
-.transition-page-enter-active,
-.transition-page-leave-active {
-  transition:
-    opacity 0.22s ease,
-    transform 0.22s ease;
-}
-.transition-page-enter-from {
-  opacity: 0;
-  transform: translateY(10px);
-}
-.transition-page-leave-to {
-  opacity: 0;
-  transform: translateY(-6px);
 }
 .page-publique > section,
 .accueil-hero,

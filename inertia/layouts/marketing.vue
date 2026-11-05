@@ -5,7 +5,7 @@ import { usePage } from '@inertiajs/vue3'
 import { Link } from '@adonisjs/inertia/vue'
 import Logo from '~/components/logo.vue'
 import FlashToasts from '~/components/flash_toasts.vue'
-import ThemeToggle from '~/components/theme_toggle.vue'
+// import ThemeToggle from '~/components/theme_toggle.vue'
 
 const pageInertia = usePage()
 const menuOuvert = ref(false)
@@ -40,7 +40,8 @@ function fermerMenu() {
         <a href="/?page=actualites" @click="fermerMenu">Actualités</a>
         <a href="/?page=contact" @click="fermerMenu">Contact</a>
         <span class="navigation-principale__separateur" />
-        <ThemeToggle />
+        <!-- Option de thème désactivée : le site reste en mode clair. -->
+        <!-- <ThemeToggle /> -->
         <template v-if="pageInertia.props.user"
           ><Link route="dashboard" class="bouton bouton--sombre bouton--petit"
             >Mon espace</Link

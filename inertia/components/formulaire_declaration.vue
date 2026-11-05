@@ -68,15 +68,28 @@ const progression = computed(() => {
 })
 
 onMounted(() => {
-  const brouillon = localStorage.getItem(cleBrouillon)
-  if (!brouillon) return
-  Object.assign(donnees, JSON.parse(brouillon) as Partial<DonneesDeclaration>)
-  messageBrouillon.value = 'Votre brouillon local a été restauré.'
+  try {
+    const brouillon = localStorage.getItem(cleBrouillon)
+    if (!brouillon) return
+    const donneesParsees: unknown = JSON.parse(brouillon)
+    if (!donneesParsees || typeof donneesParsees !== 'object' || Array.isArray(donneesParsees)) {
+      throw new Error('Brouillon local invalide')
+    }
+    Object.assign(donnees, donneesParsees as Partial<DonneesDeclaration>)
+    messageBrouillon.value = 'Votre brouillon local a été restauré.'
+  } catch {
+    localStorage.removeItem(cleBrouillon)
+    messageBrouillon.value = 'Le brouillon local était invalide et a été supprimé.'
+  }
 })
 
 function sauvegarderBrouillon() {
-  localStorage.setItem(cleBrouillon, JSON.stringify(donnees))
-  messageBrouillon.value = 'Brouillon enregistré sur cet appareil.'
+  try {
+    localStorage.setItem(cleBrouillon, JSON.stringify(donnees))
+    messageBrouillon.value = 'Brouillon enregistré sur cet appareil.'
+  } catch {
+    messageBrouillon.value = 'Le brouillon n’a pas pu être enregistré sur cet appareil.'
+  }
   declarationLocale.value = false
 }
 
