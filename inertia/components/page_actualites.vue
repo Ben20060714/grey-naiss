@@ -3,24 +3,22 @@ import { ArrowRight, CalendarDays } from 'lucide-vue-next'
 
 const actualites = [
   {
-    date: '12 juin 2026',
-    categorie: 'Vie municipale',
-    titre: 'La ville prépare la modernisation de ses services d’état civil',
-    description:
-      'La mairie de Lubumbashi présente les prochaines étapes de la transformation numérique.',
+    date: '30 juin 2027',
+    categorie: 'Fête nationale',
+    titre: 'Lorem ipsum dolor sit amet adipiscing elit quam lori tali mbe ehtio.',
+    description: 'Lorem ipsum dolor sit amet',
   },
   {
-    date: '06 juin 2026',
+    date: '06 juillet 2027',
     categorie: 'Vie locale',
-    titre: 'Les initiatives citoyennes au cœur des quartiers',
-    description: 'Retrouvez les projets qui rapprochent les services municipaux des habitants.',
+    titre: 'Lorem ipsum dolor sit amet adipiscing elit quam lori tali mbe ehtio',
+    description: 'Lorem ipsum dolor sit amet adipiscing elit quam lori tali mbe ehtio como pomodoro laq um guit.',
   },
   {
-    date: '28 mai 2026',
+    date: '28 mai 2028',
     categorie: 'Information',
-    titre: 'Les pièces à préparer pour une déclaration de naissance',
-    description:
-      'Un rappel pratique pour préparer sereinement vos démarches auprès de l’état civil.',
+    titre: 'Lorem ipsum dolor sit amet adipiscing elit quam lori tali mbe ehtio',
+    description: 'Lorem ipsum dolor sit amet adipiscing elit quam lori tali mbe ehtio.',
   },
 ]
 </script>
@@ -29,9 +27,9 @@ const actualites = [
   <main class="page-publique">
     <section class="banniere-page">
       <div class="conteneur">
-        <p class="sur-titre sur-titre--clair">La vie de la ville</p>
-        <h1>Les nouvelles de<br /><em>Lubumbashi.</em></h1>
-        <p>Les informations officielles et les rendez-vous qui concernent les habitants.</p>
+        <!-- <p class="sur-titre sur-titre--clair">La vie de la ville</p> -->
+        <h1>Prenez les dernières nouvelles de la ville de<br /><em>Lubumbashi.</em></h1>
+        <p>Lorem ipsum dolor sit amet adipiscing elit quam lori tali mbe ehtio</p>
       </div>
     </section>
     <section class="section section--actualites">
@@ -41,7 +39,7 @@ const actualites = [
             <p class="sur-titre sur-titre--sombre">Actualités</p>
             <h2>Ce qui se passe dans la ville.</h2>
           </div>
-          <span class="mention-page"><CalendarDays :size="15" /> Mise à jour municipale</span>
+          <span class="mention-page"><CalendarDays :size="15" /> Mise à jour</span>
         </div>
         <div class="grille-actualites grille-actualites--page">
           <article v-for="actualite in actualites" :key="actualite.titre" class="carte-actualite">
@@ -52,9 +50,7 @@ const actualites = [
               <p class="carte-actualite__meta">{{ actualite.categorie }} · {{ actualite.date }}</p>
               <h3>{{ actualite.titre }}</h3>
               <p>{{ actualite.description }}</p>
-              <a class="lien-souligne" href="/?page=contact"
-                >Demander une information <ArrowRight :size="15"
-              /></a>
+              <a class="lien-souligne" href="/?page=contact">Demander une information <ArrowRight :size="15"/></a>
             </div>
           </article>
         </div>

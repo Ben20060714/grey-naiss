@@ -10,11 +10,10 @@ import MarketingLayout from '~/layouts/marketing.vue'
     <main class="page-publique">
       <section class="banniere-page">
         <div class="conteneur">
-          <p class="sur-titre sur-titre--clair">Erreur 404 · Page introuvable</p>
+          <p class="sur-titre sur-titre--clair">Erreur 404</p>
           <h1>Page non<br /><em>trouvée.</em></h1>
           <p>
-            L’adresse demandée n’existe pas ou a été déplacée. Vous pouvez retourner à l’accueil de
-            la mairie de Lubumbashi ou vous orienter vers nos démarches en ligne.
+            L’adresse demandée n’existe pas ou a été déplacée. Vous pouvez retourner à l’accueil ou vous orienter vers nos démarches en ligne.
           </p>
         </div>
       </section>
@@ -33,9 +32,9 @@ import MarketingLayout from '~/layouts/marketing.vue'
               <span class="carte-service__icone">
                 <House :size="21" />
               </span>
-              <span class="carte-service__titre">Accueil de la ville</span>
+              <span class="carte-service__titre">Accueil</span>
               <span class="carte-service__description">
-                Revenir à la page principale et aux actualités de Lubumbashi.
+                Revenir à la page principale.
               </span>
               <ArrowRight class="carte-service__fleche" :size="18" />
             </a>

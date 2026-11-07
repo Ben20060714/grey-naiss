@@ -6,10 +6,10 @@ import { Clock3, Mail, MapPin, Phone } from 'lucide-vue-next'
   <main class="page-publique">
     <section class="banniere-page">
       <div class="conteneur">
-        <p class="sur-titre sur-titre--clair">Accueil municipal</p>
+        <!-- <p class="sur-titre sur-titre--clair">Accueil municipal</p> -->
         <h1>Contacter la<br /><em>mairie de Lubumbashi.</em></h1>
         <p>
-          Les coordonnées officielles seront complétées par la mairie avant la mise en production.
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Distinctio voluptates sunt excepturi aliquam..
         </p>
       </div>
     </section>
@@ -19,7 +19,7 @@ import { Clock3, Mail, MapPin, Phone } from 'lucide-vue-next'
           <p class="sur-titre sur-titre--sombre">Nous vous orientons</p>
           <h2>Une question sur une démarche ?</h2>
           <p class="contact-page__intro">
-            Pour les dossiers d’état civil, veuillez vous munir de votre référence et vous adresser
+            Pour les dossiers d’état civil, veuillez vous munir de votre/vos pièce(s) d'identité et vous adresser
             au bureau compétent.
           </p>
         </div>
@@ -34,22 +34,22 @@ import { Clock3, Mail, MapPin, Phone } from 'lucide-vue-next'
           <div>
             <span><Clock3 :size="18" /></span>
             <div>
-              <strong>Horaires d’accueil</strong>
-              <p>À confirmer par la mairie</p>
+              <strong>Heures de lorem</strong>
+              <p>Lorem ipsum dolor sit</p>
             </div>
           </div>
           <div>
             <span><Phone :size="18" /></span>
             <div>
               <strong>Téléphone</strong>
-              <p>Coordonnées officielles à renseigner</p>
+              <p>+243820433981</p>
             </div>
           </div>
           <div>
             <span><Mail :size="18" /></span>
             <div>
               <strong>Courriel</strong>
-              <p>Adresse officielle à renseigner</p>
+              <p>Havidu6@gmail.com</p>
             </div>
           </div>
         </div>

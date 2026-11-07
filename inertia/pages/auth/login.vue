@@ -5,13 +5,13 @@ import { Form, Link } from '@adonisjs/inertia/vue'
 
 <template>
   <AuthLayout>
-    <h1 class="auth__title">Accès professionnel</h1>
-    <p class="auth__sub">Connectez-vous à votre espace d’état civil.</p>
+    <h1 class="auth__title">CONNEXION</h1>
+    <!-- <p class="auth__sub">Connectez-vous à votre espace d’état civil.</p> -->
 
     <Form v-slot="{ processing, errors }" route="session.store">
       <div class="auth__form">
         <div class="field">
-          <label class="field__label" for="email">Adresse e-mail professionnelle</label>
+          <label class="field__label" for="email">Adresse e-mail</label>
           <input
             id="email"
             name="email"
@@ -51,7 +51,7 @@ import { Form, Link } from '@adonisjs/inertia/vue'
 
     <p class="auth__foot">
       Vous n’avez pas encore de compte ?
-      <Link route="new_account.create" class="il">Demander un accès</Link>
+      <Link route="new_account.create" class="il">Créez-en un</Link>
     </p>
   </AuthLayout>
 </template>

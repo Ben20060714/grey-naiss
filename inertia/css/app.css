@@ -1837,6 +1837,10 @@ input {
   position: relative;
   border-left: 1px solid var(--line);
   background: var(--paper);
+  /* background-image: url(../inertia/assets/i1.jpg);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover; */
   display: flex;
   flex-direction: column;
   justify-content: space-between;

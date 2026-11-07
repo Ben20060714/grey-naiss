@@ -138,7 +138,7 @@ function sortirPage(element: Element, terminer: () => void) {
 const services: Service[] = [
   {
     titre: 'État civil',
-    description: 'Actes, naissance, mariage et démarches liées à la famille.',
+    description: 'Actes, naissance, mariage et démarches.',
     icone: FileText,
     ancre: '/?page=services',
   },

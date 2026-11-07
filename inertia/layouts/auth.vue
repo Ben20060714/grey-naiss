@@ -21,7 +21,7 @@ import FlashToasts from '~/components/flash_toasts.vue'
       </div>
 
       <p class="auth__quote">
-        Un accès sécurisé aux outils d’état civil de la mairie de Lubumbashi.
+        Un accès aux outils d’état civil de la mairie de Lubumbashi.
       </p>
 
       <div>
@@ -30,7 +30,7 @@ import FlashToasts from '~/components/flash_toasts.vue'
           Les agents communaux, les agents de maternité et les responsables autorisés accèdent ici
           aux dossiers qui leur sont attribués.
         </p>
-        <span class="il pitch__a">Les droits sont déterminés par l’organisation.</span>
+        <!-- <span class="il pitch__a">Les droits sont déterminés par l’organisation.</span> -->
       </div>
     </aside>
   </div>

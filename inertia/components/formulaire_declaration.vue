@@ -100,13 +100,13 @@ onMounted(() => {
     if (!brouillon) return
     const donneesParsees: unknown = JSON.parse(brouillon)
     if (!donneesParsees || typeof donneesParsees !== 'object' || Array.isArray(donneesParsees)) {
-      throw new Error('Brouillon local invalide')
+      throw new Error('Brouillon invalide')
     }
     Object.assign(donnees, donneesParsees as Partial<DonneesDeclaration>)
-    messageBrouillon.value = 'Votre brouillon local a été restauré.'
+    messageBrouillon.value = 'Votre brouillon a été restauré.'
   } catch {
     localStorage.removeItem(cleBrouillon)
-    messageBrouillon.value = 'Le brouillon local était invalide et a été supprimé.'
+    messageBrouillon.value = 'Le brouillon était invalide et a été supprimé.'
   }
 })
 
@@ -129,7 +129,7 @@ function supprimerBrouillon() {
     champFichierRef.value.value = ''
   }
   erreurs.value = {}
-  messageBrouillon.value = 'Le brouillon local a été supprimé.'
+  messageBrouillon.value = 'Le brouillon a été supprimé.'
   declarationLocale.value = false
 }
 
@@ -180,15 +180,12 @@ function choisirDocument(event: Event) {
         <h2>Déclaration de naissance</h2>
       </div>
       <div class="progression-formulaire">
-        <span
-          ><strong>{{ progression }}%</strong> complété</span
-        >
+        <span><strong>{{ progression }}%</strong> complété</span>
         <div><i :style="{ width: progression + '%' }" /></div>
       </div>
     </div>
     <div v-if="declarationLocale" class="alerte-formulaire alerte-formulaire--succes" role="status">
-      <Check :size="18" /><span
-        >Le dossier est prêt. Il est conservé localement et n’a pas été transmis à un serveur.</span
+      <Check :size="18" /><span>Le dossier est prêt. Il est conservé localement mais n’a pas été transmis à un serveur.</span
       >
     </div>
     <div v-if="messageBrouillon" class="message-brouillon" role="status">
@@ -331,6 +328,8 @@ function choisirDocument(event: Event) {
               }}</small></label
             >
           </div>
+
+          <!-- A partir de cette section, certains éléments doivent être inscrit seulement en conformité avec les lois du pays : pour l'heure, le système d'identifiant n'a jamais été validé par les dirigeants -->
           <label class="champ-formulaire"
             ><span>Identifiant national RDC-Pass <i>facultatif</i></span
             ><input
@@ -408,7 +407,7 @@ function choisirDocument(event: Event) {
             ></label>
           </div>
           <p class="aide-formulaire">
-            <FileText :size="15" /> Le document est uniquement référencé dans le brouillon local.
+            <FileText :size="15" /> Le document est uniquement référencé dans le brouillon.
           </p></template
         >
         <template v-else
@@ -441,9 +440,9 @@ function choisirDocument(event: Event) {
         Valider localement <Check :size="17" />
       </button>
     </div>
-    <p class="note-securite">
+    <!-- <p class="note-securite">
       Aucune donnée ne quitte ce navigateur. La transmission au serveur n’est pas activée dans cette
       version frontend.
-    </p>
+    </p> -->
   </form>
 </template>

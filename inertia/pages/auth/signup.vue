@@ -5,8 +5,8 @@ import { Form, Link } from '@adonisjs/inertia/vue'
 
 <template>
   <AuthLayout>
-    <h1 class="auth__title">Demander un accès</h1>
-    <p class="auth__sub">Créez votre compte professionnel pour accéder aux outils autorisés.</p>
+    <h1 class="auth__title">INSCRIPTION</h1>
+    <!-- <p class="auth__sub">Créez votre compte professionnel pour accéder aux outils autorisés.</p> -->
 
     <Form v-slot="{ processing, errors }" route="new_account.store">
       <div class="auth__form">
@@ -25,7 +25,7 @@ import { Form, Link } from '@adonisjs/inertia/vue'
         </div>
 
         <div class="field">
-          <label class="field__label" for="email">Adresse e-mail professionnelle</label>
+          <label class="field__label" for="email">Adresse e-mail</label>
           <input
             id="email"
             name="email"
@@ -74,14 +74,14 @@ import { Form, Link } from '@adonisjs/inertia/vue'
           :disabled="processing"
           :style="{ marginTop: '4px' }"
         >
-          {{ processing ? 'Envoi en cours…' : 'Envoyer la demande' }}
+          {{ processing ? 'Inscription...' : 'S\'inscrire' }}
         </button>
       </div>
     </Form>
 
     <p class="auth__foot">
       Vous avez déjà un compte ?
-      <Link route="session.create" class="il">Se connecter</Link>
+      <Link route="session.create" class="il">Connectez-vous</Link>
     </p>
   </AuthLayout>
 </template>
