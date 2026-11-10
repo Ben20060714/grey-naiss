@@ -1,146 +1,462 @@
 <script setup lang="ts">
-import { ArrowUpRight } from 'lucide-vue-next'
+import {
+  ArrowRight,
+  CalendarDays,
+  ChevronRight,
+  Clock3,
+  FileText,
+  MapPin,
+  Phone,
+  QrCode,
+  Search,
+  ShieldCheck,
+  Users,
+} from 'lucide-vue-next'
+import { gsap } from 'gsap'
+import { defineAsyncComponent, nextTick, onBeforeUnmount, onMounted, onUpdated, ref } from 'vue'
 import MarketingLayout from '~/layouts/marketing.vue'
+import PageChargement from '~/components/page_chargement.vue'
+import PageErreur from '~/components/page_erreur.vue'
+// import imageLubumbashi from '~/assets/lubumbashi-hero.svg'
+
+const PageActualites = defineAsyncComponent({
+  loader: () => import('~/components/page_actualites.vue'),
+  loadingComponent: PageChargement,
+  errorComponent: PageErreur,
+  delay: 0,
+  timeout: 10000,
+})
+const PageContact = defineAsyncComponent({
+  loader: () => import('~/components/page_contact.vue'),
+  loadingComponent: PageChargement,
+  errorComponent: PageErreur,
+  delay: 0,
+  timeout: 10000,
+})
+const PageServices = defineAsyncComponent({
+  loader: () => import('~/components/page_services.vue'),
+  loadingComponent: PageChargement,
+  errorComponent: PageErreur,
+  delay: 0,
+  timeout: 10000,
+})
+
+type Service = { titre: string; description: string; icone: typeof FileText; ancre: string }
+type Actualite = { date: string; categorie: string; titre: string; description: string }
+type Evenement = { mois: string; jour: string; titre: string; lieu: string; heure: string }
+type PagePublique = 'accueil' | 'services' | 'actualites' | 'contact'
+
+function determinerPageInitiale(): PagePublique {
+  if (typeof window === 'undefined') return 'accueil'
+  const pageDemandee = new URLSearchParams(window.location.search).get('page')
+  return ['services', 'actualites', 'contact'].includes(pageDemandee ?? '')
+    ? (pageDemandee as Exclude<PagePublique, 'accueil'>)
+    : 'accueil'
+}
+
+const pageActuelle = ref<PagePublique>(determinerPageInitiale())
+const conteneurPage = ref<HTMLElement | null>(null)
+const dureeTransition = 0.38
+let clePageAnimee = ''
+
+function reduireLesAnimations() {
+  return window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false
+}
+
+function animerContenuPage(element: Element) {
+  const elements = element.querySelectorAll(
+    '.accueil-hero__texte, .accueil-hero__repere, .carte-service, .carte-actualite, .evenement'
+  )
+  if (!elements.length) return
+
+  const clePage = pageActuelle.value ?? 'chargement'
+  if (clePage === clePageAnimee) return
+  clePageAnimee = clePage
+
+  if (reduireLesAnimations()) {
+    gsap.set(elements, { clearProps: 'opacity,transform' })
+    return
+  }
+
+  gsap.fromTo(
+    elements,
+    { opacity: 0, y: 12 },
+    {
+      opacity: 1,
+      y: 0,
+      clearProps: 'opacity,transform',
+      duration: 0.45,
+      ease: 'power2.out',
+      stagger: 0.06,
+    }
+  )
+}
+
+function entrerPage(element: Element, terminer: () => void) {
+  gsap.killTweensOf(element)
+  if (reduireLesAnimations()) {
+    gsap.set(element, { clearProps: 'opacity,transform' })
+    animerContenuPage(element)
+    terminer()
+    return
+  }
+
+  gsap.fromTo(
+    element,
+    { opacity: 0.88, y: 16 },
+    {
+      opacity: 1,
+      y: 0,
+      duration: dureeTransition,
+      ease: 'power2.out',
+      clearProps: 'opacity,transform',
+      onComplete: () => {
+        animerContenuPage(element)
+        terminer()
+      },
+    }
+  )
+}
+
+function sortirPage(element: Element, terminer: () => void) {
+  gsap.killTweensOf(element)
+  if (reduireLesAnimations()) {
+    terminer()
+    return
+  }
+
+  gsap.to(element, {
+    opacity: 0.96,
+    y: -12,
+    duration: dureeTransition,
+    ease: 'power2.in',
+    clearProps: 'opacity,transform',
+    onComplete: terminer,
+  })
+}
+
+const services: Service[] = [
+  {
+    titre: 'État civil',
+    description: 'Actes, naissance, mariage et démarches.',
+    icone: FileText,
+    ancre: '/?page=services',
+  },
+  {
+    titre: 'Démarches en ligne',
+    description: 'Retrouvez les formulaires et les informations utiles.',
+    icone: Search,
+    ancre: '/?page=services',
+  },
+  {
+    titre: 'Vie associative',
+    description: 'Associations, équipements et initiatives citoyennes.',
+    icone: Users,
+    ancre: '/?page=actualites',
+  },
+  {
+    titre: 'Signaler un problème',
+    description: 'Une rue, un éclairage ou un espace public à nous signaler.',
+    icone: ShieldCheck,
+    ancre: '/?page=contact',
+  },
+]
+
+const actualites: Actualite[] = [
+  {
+    date: '12 juin 2025',
+    categorie: 'Vie municipale',
+    titre: 'La ville présente son nouveau plan de mobilité',
+    description: 'Découvrez les aménagements prévus pour faciliter les déplacements de chacun.',
+  },
+  {
+    date: '06 juin 2025',
+    categorie: 'Cadre de vie',
+    titre: 'Les inscriptions aux activités d’été sont ouvertes',
+    description: 'Un programme d’activités pour les enfants, les jeunes et les familles.',
+  },
+  {
+    date: '28 mai 2025',
+    categorie: 'Solidarité',
+    titre: 'Une permanence sociale au plus près des habitants',
+    description: 'La mairie renforce son accompagnement avec des permanences sur rendez-vous.',
+  },
+]
+
+const evenements: Evenement[] = [
+  {
+    mois: 'JUIN',
+    jour: '21',
+    titre: 'Fête de la musique',
+    lieu: 'Place de la mairie',
+    heure: '19:00',
+  },
+  {
+    mois: 'JUIN',
+    jour: '28',
+    titre: 'Conseil municipal',
+    lieu: 'Salle des délibérations',
+    heure: '18:30',
+  },
+  {
+    mois: 'JUIL.',
+    jour: '05',
+    titre: 'Marché des producteurs',
+    lieu: 'Place du marché',
+    heure: '08:00',
+  },
+]
+
+function lirePage() {
+  const pageDemandee = new URLSearchParams(window.location.search).get('page')
+  pageActuelle.value = ['services', 'actualites', 'contact'].includes(pageDemandee ?? '')
+    ? (pageDemandee as Exclude<PagePublique, 'accueil'>)
+    : 'accueil'
+}
+
+function intercepterNavigation(evenement: MouseEvent) {
+  const cible = evenement.target
+  if (!(cible instanceof Element)) return
+
+  const lien = cible.closest<HTMLAnchorElement>('a[href]')
+  if (
+    !lien ||
+    lien.target === '_blank' ||
+    evenement.defaultPrevented ||
+    evenement.button !== 0 ||
+    evenement.metaKey ||
+    evenement.ctrlKey ||
+    evenement.shiftKey ||
+    evenement.altKey
+  ) {
+    return
+  }
+
+  const url = new URL(lien.href, window.location.href)
+  if (url.origin !== window.location.origin || url.pathname !== '/') {
+    return
+  }
+
+  evenement.preventDefault()
+  if (url.href !== window.location.href) {
+    window.history.pushState({}, '', url)
+    lirePage()
+  }
+  window.scrollTo({ top: 0, behavior: 'smooth' })
+}
+
+onMounted(() => {
+  lirePage()
+  window.addEventListener('popstate', lirePage)
+  window.addEventListener('click', intercepterNavigation)
+})
+
+onUpdated(() => {
+  // Une page asynchrone peut remplacer le composant de chargement après la transition.
+  nextTick(() => {
+    if (conteneurPage.value) animerContenuPage(conteneurPage.value)
+  })
+})
+
+onBeforeUnmount(() => {
+  window.removeEventListener('popstate', lirePage)
+  window.removeEventListener('click', intercepterNavigation)
+  if (conteneurPage.value) {
+    gsap.killTweensOf(conteneurPage.value)
+  }
+})
 </script>
 
 <template>
   <MarketingLayout>
-    <div class="home">
-      <article class="prose-card">
-        <div class="pc-top">
-          <span class="pc-status mono tag" :style="{ color: 'var(--ok)' }">
-            <span class="dot" /> Server ready
-          </span>
-        </div>
+    <Transition :css="false" appear mode="out-in" @enter="entrerPage" @leave="sortirPage">
+      <div ref="conteneurPage" :key="pageActuelle">
+        <main v-if="pageActuelle === 'accueil'">
+          <section class="accueil-hero" aria-labelledby="titre-principal">
+            <div class="conteneur accueil-hero__contenu">
+              <div class="accueil-hero__texte">
+                <p class="sur-titre"><span class="point-vivant" /> Site officiel de la ville</p>
+                <h1 id="titre-principal">Lubumbashi,<br /><em>à vos côtés.</em></h1>
+                <p class="accueil-hero__description">
+                  Retrouvez vos services municipaux, les actualités de la ville et toutes les
+                  informations utiles au quotidien.
+                </p>
+                <div class="accueil-hero__actions">
+                  <a class="bouton bouton--clair" href="/?page=services"
+                    >Accéder aux démarches <ArrowRight :size="17"
+                  /></a>
+                  <a class="lien-discret" href="/?page=contact"
+                    >Nous contacter <ChevronRight :size="16"
+                  /></a>
+                </div>
+              </div>
+              <div class="accueil-hero__repere">
+                <!--
+                <figure class="accueil-hero__visuel">
+                  <img
+                    :src="imageLubumbashi"
+                    alt="Illustration de Lubumbashi au lever du jour"
+                    width="900"
+                    height="760"
+                    fetchpriority="high"
+                  />
+                  <figcaption>Lubumbashi · Haut-Katanga</figcaption>
+                </figure>
+                -->
+                <div class="repere-carte">
+                  <span class="repere-carte__marqueur"><MapPin :size="21" /></span>
+                  <div>
+                    <span class="repere-carte__etiquette">Mairie de Lubumbashi</span
+                    ><strong>Accueil municipal</strong><span>Horaires à consulter</span>
+                  </div>
+                  <div class="repere-carte__ligne" />
+                  <div class="repere-carte__coordonnees">
+                    <span><Phone :size="14" /> Coordonnées officielles</span
+                    ><span><MapPin :size="14" /> Lubumbashi, Haut-Katanga</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="accueil-hero__vague" aria-hidden="true" />
+          </section>
 
-        <div class="pc-lead">Welcome to the power of a full-stack Vue app.</div>
+          <section id="services" class="section section--services" aria-labelledby="titre-services">
+            <div class="conteneur">
+              <div class="entete-section">
+                <div>
+                  <p class="sur-titre sur-titre--sombre">À votre service</p>
+                  <h2 id="titre-services">Les démarches les plus demandées</h2>
+                </div>
+                <a class="lien-souligne" href="/?page=services"
+                  >Voir tous les services <ArrowRight :size="16"
+                /></a>
+              </div>
+              <div class="grille-services">
+                <a
+                  v-for="service in services"
+                  :key="service.titre"
+                  class="carte-service"
+                  :href="service.ancre"
+                  ><span class="carte-service__icone"
+                    ><component :is="service.icone" :size="21" /></span
+                  ><span class="carte-service__titre">{{ service.titre }}</span
+                  ><span class="carte-service__description">{{ service.description }}</span
+                  ><ArrowRight class="carte-service__fleche" :size="18"
+                /></a>
+              </div>
+            </div>
+          </section>
 
-        <p class="pc-para">
-          Powered by Inertia and Vue, this setup blends server-driven routing with rich client-side
-          interactivity that feels seamless, fast, and cohesive.
-        </p>
-
-        <p class="pc-para">
-          This page is simply proof the engine started. Everything from here is yours to build.
-        </p>
-
-        <ul class="links">
-          <li>
-            <a class="lrow" href="https://docs.adonisjs.com" target="_blank" rel="noreferrer">
-              <span class="lrow__bullet" />
-              <span class="lrow__title">Documentation</span>
-              <span class="lrow__desc">Guides & API reference</span>
-              <span class="lrow__arrow"><ArrowUpRight :size="16" /></span>
-            </a>
-          </li>
-          <li>
-            <a class="lrow" href="https://plus.adonisjs.com" target="_blank" rel="noreferrer">
-              <span class="lrow__bullet" />
-              <span class="lrow__title">AdonisJS Plus</span>
-              <span class="lrow__desc">Feature packs and Flow AI</span>
-              <span class="lrow__arrow"><ArrowUpRight :size="16" /></span>
-            </a>
-          </li>
-          <li>
-            <a
-              class="lrow"
-              href="https://discord.com/invite/vDcEjq6"
-              target="_blank"
-              rel="noreferrer"
-            >
-              <span class="lrow__bullet" />
-              <span class="lrow__title">Discord</span>
-              <span class="lrow__desc">Meet fellow AdonisJS developers</span>
-              <span class="lrow__arrow"><ArrowUpRight :size="16" /></span>
-            </a>
-          </li>
-        </ul>
-
-        <div class="stack">
-          <span class="tag">Built with</span>
-          <div class="pile" role="list" aria-label="Tech stack">
-            <span class="tile" role="listitem" title="AdonisJS" :style="{ background: '#5A45FF' }">
-              <svg viewBox="0 0 160 160" fill="#fff" aria-hidden="true">
-                <path
-                  fill-rule="evenodd"
-                  clip-rule="evenodd"
-                  d="M0 80.0001C0 144.521 15.4786 160 79.9999 160 144.521 160 160 144.521 160 80.0001 160 15.4786 144.521 0 79.9999 0 15.4786 0 0 15.4786 0 80.0001zm32.2607 16.6191l25.0918-57.0266c4.2361-9.613 12.3825-14.8268 22.6474-14.8268 10.265 0 18.4113 5.2138 22.6481 14.8268l25.091 57.0266c1.141 2.77 2.118 6.3538 2.118 9.4498 0 14.175-9.939 24.114-24.114 24.114-4.828 0-8.6629-1.232-12.5444-2.479-3.9771-1.278-8.0036-2.572-13.1987-2.572-5.1349 0-9.2597 1.306-13.3154 2.589-3.9233 1.241-7.7814 2.462-12.4279 2.462-14.1752 0-24.1141-9.939-24.1141-24.114 0-3.096.9776-6.6798 2.1182-9.4498zm47.7392-47.0871L55.2344 105.581c7.332-3.422 15.8043-5.051 24.7655-5.051 8.6358 0 17.434 1.629 24.4401 5.051L79.9999 49.5321z"
-                />
-              </svg>
-            </span>
-            <span class="tile" role="listitem" title="Inertia" :style="{ background: '#9061F9' }">
-              <svg viewBox="0 0 24 24" fill="#fff" aria-hidden="true">
-                <path d="M12.5 8l4 4l-4 4h4.5l4 -4l-4 -4z" />
-                <path d="M3.5 8l4 4l-4 4h4.5l4 -4l-4 -4z" />
-              </svg>
-            </span>
-            <span class="tile" role="listitem" title="Vue" :style="{ background: '#1F2937' }">
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M12 21.35L0.5 2.65h4.5L12 13.85 19 2.65h4.5z" fill="#41B883" />
-                <path d="M12 21.35L4.65 9.05h3.7L12 14.85l3.65-5.8h3.7z" fill="#34495E" />
-              </svg>
-            </span>
-            <span
-              class="tile"
-              role="listitem"
-              title="TypeScript"
-              :style="{ background: '#3178C6' }"
-            >
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <text
-                  x="12"
-                  y="17"
-                  text-anchor="middle"
-                  font-family="ui-monospace, SFMono-Regular, Menlo, monospace"
-                  font-weight="700"
-                  font-size="10"
-                  fill="#fff"
-                  letter-spacing="-0.5"
+          <section
+            id="vie-locale"
+            class="section section--actualites"
+            aria-labelledby="titre-actualites"
+          >
+            <div class="conteneur">
+              <div class="entete-section">
+                <div>
+                  <p class="sur-titre sur-titre--sombre">La vie de la commune</p>
+                  <h2 id="titre-actualites">Actualités de la ville</h2>
+                </div>
+                <a class="lien-souligne" href="/?page=actualites"
+                  >Toutes les actualités <ArrowRight :size="16"
+                /></a>
+              </div>
+              <div class="grille-actualites">
+                <article
+                  v-for="actualite in actualites"
+                  :key="actualite.titre"
+                  class="carte-actualite"
                 >
-                  TS
-                </text>
-              </svg>
-            </span>
-            <span class="tile" role="listitem" title="Vite" :style="{ background: '#1E1B2E' }">
-              <svg viewBox="0 0 410 404" aria-hidden="true">
-                <defs>
-                  <linearGradient
-                    id="viteA"
-                    x1="6"
-                    y1="33"
-                    x2="235"
-                    y2="344"
-                    gradientUnits="userSpaceOnUse"
-                  >
-                    <stop stop-color="#41D1FF" />
-                    <stop offset="1" stop-color="#BD34FE" />
-                  </linearGradient>
-                  <linearGradient
-                    id="viteB"
-                    x1="194"
-                    y1="8"
-                    x2="236"
-                    y2="292"
-                    gradientUnits="userSpaceOnUse"
-                  >
-                    <stop stop-color="#FFEA83" />
-                    <stop offset=".083" stop-color="#FFDD35" />
-                    <stop offset="1" stop-color="#FFA800" />
-                  </linearGradient>
-                </defs>
-                <path
-                  d="M399.641 59.5246L215.643 388.545C211.844 395.338 202.084 395.378 198.228 388.618L10.5817 59.5563C6.38087 52.1896 12.6802 43.2665 21.0281 44.7586L205.223 77.6824C206.398 77.8924 207.601 77.8904 208.776 77.6763L389.119 44.8058C397.439 43.2894 403.768 52.1434 399.641 59.5246Z"
-                  fill="url(#viteA)"
-                />
-                <path
-                  d="M292.965 1.5744L156.801 28.2552C154.563 28.6937 152.906 30.5903 152.771 32.8664L144.395 174.33C144.198 177.662 147.258 180.248 150.51 179.498L188.42 170.749C191.967 169.931 195.172 173.055 194.443 176.622L183.18 231.775C182.422 235.487 185.907 238.661 189.532 237.56L212.947 230.446C216.577 229.344 220.065 232.527 219.297 236.242L201.398 322.875C200.278 328.294 207.486 331.249 210.492 326.603L212.5 323.5L323.454 102.072C325.312 98.3645 322.108 94.137 318.036 94.9233L279.014 102.452C275.347 103.159 272.227 99.7398 273.262 96.1457L298.731 7.66608C299.767 4.06956 296.642 0.649737 292.965 1.5744Z"
-                  fill="url(#viteB)"
-                />
-              </svg>
-            </span>
-          </div>
-        </div>
-      </article>
-    </div>
+                  <div class="carte-actualite__image" aria-hidden="true">
+                    <span>{{ actualite.categorie.slice(0, 1) }}</span>
+                  </div>
+                  <div class="carte-actualite__contenu">
+                    <p class="carte-actualite__meta">
+                      {{ actualite.categorie }} · {{ actualite.date }}
+                    </p>
+                    <h3>{{ actualite.titre }}</h3>
+                    <p>{{ actualite.description }}</p>
+                    <a class="lien-souligne" href="/?page=actualites"
+                      >Lire la suite <ArrowRight :size="15"
+                    /></a>
+                  </div>
+                </article>
+              </div>
+            </div>
+          </section>
+
+          <section
+            id="verification"
+            class="section section--verification"
+            aria-labelledby="titre-verification"
+          >
+            <div class="conteneur verification-publique">
+              <div class="verification-publique__icone"><QrCode :size="28" /></div>
+              <div>
+                <p class="sur-titre sur-titre--sombre">Service public</p>
+                <h2 id="titre-verification">Vérifier un acte de naissance</h2>
+                <p>
+                  Un acte portant un QR code pourra être vérifié avec sa référence. Les informations
+                  personnelles ne sont jamais affichées dans le QR code.
+                </p>
+              </div>
+              <div class="verification-publique__etat">
+                <span class="point-etat" /> Service de vérification en préparation
+              </div>
+            </div>
+          </section>
+
+          <section class="section section--agenda" aria-labelledby="titre-agenda">
+            <div class="conteneur agenda">
+              <div class="agenda__intro">
+                <p class="sur-titre sur-titre--clair">À noter dans vos agendas</p>
+                <h2 id="titre-agenda">Les prochains<br /><em>rendez-vous.</em></h2>
+                <p>
+                  Conseils, rencontres et événements : la ville vous donne rendez-vous toute
+                  l’année.
+                </p>
+                <a class="bouton bouton--clair" href="/?page=actualites"
+                  >Voir l’agenda <CalendarDays :size="17"
+                /></a>
+              </div>
+              <div class="liste-evenements">
+                <article v-for="evenement in evenements" :key="evenement.titre" class="evenement">
+                  <div class="evenement__date">
+                    <span>{{ evenement.mois }}</span
+                    ><strong>{{ evenement.jour }}</strong>
+                  </div>
+                  <div class="evenement__details">
+                    <h3>{{ evenement.titre }}</h3>
+                    <span><MapPin :size="14" /> {{ evenement.lieu }}</span>
+                  </div>
+                  <span class="evenement__heure"><Clock3 :size="15" /> {{ evenement.heure }}</span>
+                </article>
+              </div>
+            </div>
+          </section>
+
+          <section id="contact" class="section section--contact" aria-labelledby="titre-contact">
+            <div class="conteneur contact">
+              <div>
+                <p class="sur-titre sur-titre--sombre">Une question ?</p>
+                <h2 id="titre-contact">La mairie vous répond.</h2>
+              </div>
+              <div class="contact__infos">
+                <p>Accueil de l’hôtel de ville</p>
+                <strong>Accueil municipal</strong
+                ><span>Les coordonnées seront publiées par la mairie.</span>
+              </div>
+              <a class="bouton bouton--sombre" href="/?page=services"
+                >Voir les services publics <ArrowRight :size="17"
+              /></a>
+            </div>
+          </section>
+        </main>
+        <PageServices v-else-if="pageActuelle === 'services'" />
+        <PageActualites v-else-if="pageActuelle === 'actualites'" />
+        <PageContact v-else />
+      </div>
+    </Transition>
   </MarketingLayout>
 </template>

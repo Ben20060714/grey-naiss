@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import Logo from '~/components/logo.vue'
 import FlashToasts from '~/components/flash_toasts.vue'
-import ThemeToggle from '~/components/theme_toggle.vue'
+// import ThemeToggle from '~/components/theme_toggle.vue'
 </script>
 
 <template>
@@ -16,25 +16,21 @@ import ThemeToggle from '~/components/theme_toggle.vue'
 
     <aside class="auth__aside">
       <div class="auth__aside-top">
-        <ThemeToggle />
+        <!-- Option de thème désactivée : le site reste en mode clair. -->
+        <!-- <ThemeToggle /> -->
       </div>
 
-      <p class="auth__quote">Auth, kept intentionally minimal so you can build it your way.</p>
+      <p class="auth__quote">
+        Un accès aux outils d’état civil de la mairie de Lubumbashi.
+      </p>
 
       <div>
-        <div class="pitch__t">Looking for production-ready auth?</div>
+        <div class="pitch__t">Espace réservé aux personnes habilitées</div>
         <p class="pitch__p">
-          Check out Feature packs, production-ready full-stack components from the creator of
-          AdonisJS.
+          Les agents communaux, les agents de maternité et les responsables autorisés accèdent ici
+          aux dossiers qui leur sont attribués.
         </p>
-        <a
-          class="il pitch__a"
-          href="https://plus.adonisjs.com/feature-packs"
-          target="_blank"
-          rel="noreferrer"
-        >
-          Explore Feature packs →
-        </a>
+        <!-- <span class="il pitch__a">Les droits sont déterminés par l’organisation.</span> -->
       </div>
     </aside>
   </div>

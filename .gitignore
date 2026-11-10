@@ -4,6 +4,15 @@ node_modules/
 # Build output
 dist/
 dist-ssr/
+# Les fichiers générés restent ignorés, mais les images frontend sont versionnées.
+public/
+!public/
+public/*
+!public/images/
+!public/images/**
+.adonisjs/
+build/
+
 
 # Local environment files
 .env
@@ -22,7 +31,7 @@ blob-report/
 .vitest/
 *.tsbuildinfo
 .eslintcache
-
+cahier de charges.txt
 # Local environments and temporary files
 venv/
 tmp@/
@@ -30,3 +39,6 @@ tmp@/
 # Operating system files
 .DS_Store
 Thumbs.db
+
+# Images en hors ligne
+i*.jpg

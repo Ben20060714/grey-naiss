@@ -1,25 +1,38 @@
 <script setup lang="ts">
-import { LayoutGrid } from 'lucide-vue-next'
+import { Activity, CloudOff, FilePlus2, ShieldAlert } from 'lucide-vue-next'
+import FormulaireDeclaration from '~/components/formulaire_declaration.vue'
 import Page from '~/components/page.vue'
 import AppLayout from '~/layouts/app.vue'
 </script>
 
 <template>
   <AppLayout>
-    <Page title="Dashboard" hide-title>
-      <div class="empty">
-        <div class="empty__mark">
-          <LayoutGrid :size="22" />
-        </div>
-        <h1>Your dashboard is ready</h1>
-        <p>
-          It's empty on purpose. A clean starting point with nothing to undo. Add your first route
-          and component to begin.
-        </p>
-        <p class="mono" :style="{ fontSize: '12.5px', color: 'var(--subtle)', marginTop: '4px' }">
-          Start in <span class="kbd">inertia/pages/dashboard.vue</span>
-        </p>
+    <Page
+      title="Nouvelle déclaration de naissance"
+      description="Saisissez les informations du dossier. Vos données restent enregistrées uniquement sur cet appareil."
+    >
+      <template #actions>
+        <span class="etiquette-locale"><FilePlus2 :size="15" /> Brouillon local</span>
+      </template>
+      <div class="tableau-agent">
+        <article class="indicateur-agent">
+          <span class="indicateur-agent__icone"><FilePlus2 :size="18" /></span
+          ><span>Déclarations aujourd’hui</span><strong>24</strong>
+        </article>
+        <article class="indicateur-agent">
+          <span class="indicateur-agent__icone"><Activity :size="18" /></span
+          ><span>Dossiers en attente</span><strong>5</strong>
+        </article>
+        <article class="indicateur-agent">
+          <span class="indicateur-agent__icone"><ShieldAlert :size="18" /></span
+          ><span>Correspondances à vérifier</span><strong>2</strong>
+        </article>
+        <article class="indicateur-agent indicateur-agent--hors-ligne">
+          <span class="indicateur-agent__icone"><CloudOff :size="18" /></span
+          ><span>État de synchronisation</span><strong>Hors ligne</strong>
+        </article>
       </div>
+      <FormulaireDeclaration />
     </Page>
   </AppLayout>
 </template>

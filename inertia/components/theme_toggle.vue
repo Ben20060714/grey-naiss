@@ -3,17 +3,17 @@ import { ref } from 'vue'
 import { usePage } from '@inertiajs/vue3'
 import { Moon, Sun } from 'lucide-vue-next'
 
-const COOKIE = 'app_theme'
-const ONE_YEAR = 60 * 60 * 24 * 365
+const NOM_COOKIE = 'app_theme'
+const DUREE_UN_AN = 60 * 60 * 24 * 365
 
-const page = usePage()
-const theme = ref<'light' | 'dark'>(page.props.preferences?.theme ?? 'light')
+const pageInertia = usePage()
+const theme = ref<'light' | 'dark'>(pageInertia.props.preferences?.theme ?? 'light')
 
-function toggle() {
-  const next = theme.value === 'dark' ? 'light' : 'dark'
-  theme.value = next
-  document.documentElement.setAttribute('data-theme', next)
-  document.cookie = `${COOKIE}=${next}; path=/; max-age=${ONE_YEAR}; samesite=lax`
+function changerTheme() {
+  const prochainTheme = theme.value === 'dark' ? 'light' : 'dark'
+  theme.value = prochainTheme
+  document.documentElement.setAttribute('data-theme', prochainTheme)
+  document.cookie = `${NOM_COOKIE}=${prochainTheme}; path=/; max-age=${DUREE_UN_AN}; samesite=lax`
 }
 </script>
 
@@ -21,9 +21,9 @@ function toggle() {
   <button
     type="button"
     class="iconbtn"
-    :aria-label="theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'"
-    :title="theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'"
-    @click="toggle"
+    :aria-label="theme === 'dark' ? 'Activer le thème clair' : 'Activer le thème sombre'"
+    :title="theme === 'dark' ? 'Activer le thème clair' : 'Activer le thème sombre'"
+    @click="changerTheme"
   >
     <Sun
       :size="16"

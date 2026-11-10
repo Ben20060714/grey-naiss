@@ -5,27 +5,27 @@ import { Form, Link } from '@adonisjs/inertia/vue'
 
 <template>
   <AuthLayout>
-    <h1 class="auth__title">Welcome back</h1>
-    <p class="auth__sub">Sign in to continue building.</p>
+    <h1 class="auth__title">CONNEXION</h1>
+    <!-- <p class="auth__sub">Connectez-vous à votre espace d’état civil.</p> -->
 
     <Form v-slot="{ processing, errors }" route="session.store">
       <div class="auth__form">
         <div class="field">
-          <label class="field__label" for="email">Email</label>
+          <label class="field__label" for="email">Adresse e-mail</label>
           <input
             id="email"
             name="email"
             type="email"
             class="field__input"
             autocomplete="username"
-            placeholder="you@example.com"
+            placeholder="agent@mairie-lubumbashi.cd"
             :aria-invalid="errors.email ? 'true' : 'false'"
           />
           <span v-if="errors.email" class="field__error">{{ errors.email }}</span>
         </div>
 
         <div class="field">
-          <label class="field__label" for="password">Password</label>
+          <label class="field__label" for="password">Mot de passe</label>
           <input
             id="password"
             name="password"
@@ -44,14 +44,14 @@ import { Form, Link } from '@adonisjs/inertia/vue'
           :disabled="processing"
           :style="{ marginTop: '4px' }"
         >
-          {{ processing ? 'One moment…' : 'Sign in' }}
+          {{ processing ? 'Connexion en cours…' : 'Se connecter' }}
         </button>
       </div>
     </Form>
 
     <p class="auth__foot">
-      New here?
-      <Link route="new_account.create" class="il">Create an account</Link>
+      Vous n’avez pas encore de compte ?
+      <Link route="new_account.create" class="il">Créez-en un</Link>
     </p>
   </AuthLayout>
 </template>

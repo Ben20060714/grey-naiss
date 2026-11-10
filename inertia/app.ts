@@ -6,10 +6,15 @@ import { TuyauProvider } from '@adonisjs/inertia/vue'
 import { createApp, type DefineComponent, h } from 'vue'
 import { resolvePageComponent } from '@adonisjs/inertia/helpers'
 
-const appName = import.meta.env.VITE_APP_NAME || 'AdonisJS'
+const nomApplication = import.meta.env.VITE_APP_NAME || 'Mairie de Lubumbashi'
+
+// Le mode sombre est désactivé pour cette version : le site reste en mode clair.
+if (typeof document !== 'undefined') {
+  document.documentElement.setAttribute('data-theme', 'light')
+}
 
 createInertiaApp({
-  title: (title) => (title ? `${title} - ${appName}` : appName),
+  title: (title) => (title ? `${title} - ${nomApplication}` : nomApplication),
   resolve: (name) => {
     return resolvePageComponent(
       `./pages/${name}.vue`,

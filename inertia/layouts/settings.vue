@@ -3,22 +3,18 @@ import Page from '~/components/page.vue'
 import NavLink, { type NavItem } from '~/components/nav_link.vue'
 
 /**
- * The pages of the settings area, listed in the sidebar. Register a route
- * for each page and add it here, for example:
- *
- * `{ label: 'Profile', route: 'settings.profile', icon: User }`
- *
- * Each settings page renders inside the app layout and this layout:
- *
- * `<AppLayout><SettingsLayout>…</SettingsLayout></AppLayout>`
+ * Pages de la zone de paramétrage listées dans la barre latérale.
  */
 const items: NavItem[] = []
 </script>
 
 <template>
-  <Page title="Settings" description="Manage your account settings and preferences.">
+  <Page
+    title="Paramètres"
+    description="Gérez les préférences de votre compte et vos options professionnelles."
+  >
     <div class="sidebar-layout">
-      <nav class="sidebar-layout__nav" aria-label="Settings">
+      <nav class="sidebar-layout__nav" aria-label="Paramètres">
         <NavLink
           v-for="item in items"
           :key="item.label"
