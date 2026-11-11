@@ -180,13 +180,17 @@ function choisirDocument(event: Event) {
         <h2>Déclaration de naissance</h2>
       </div>
       <div class="progression-formulaire">
-        <span><strong>{{ progression }}%</strong> complété</span>
+        <span
+          ><strong>{{ progression }}%</strong> complété</span
+        >
         <div><i :style="{ width: progression + '%' }" /></div>
       </div>
     </div>
     <div v-if="declarationLocale" class="alerte-formulaire alerte-formulaire--succes" role="status">
-      <Check :size="18" /><span>Le dossier est prêt. Il est conservé localement mais n’a pas été transmis à un serveur.</span
-      >
+      <Check :size="18" />
+      <span>
+        Le dossier est prêt. Il est conservé localement mais n’a pas été transmis à un serveur.
+      </span>
     </div>
     <div v-if="messageBrouillon" class="message-brouillon" role="status">
       <Save :size="15" /> {{ messageBrouillon }}
