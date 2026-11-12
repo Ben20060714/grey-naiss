@@ -38,6 +38,15 @@ import FlashToasts from '~/components/flash_toasts.vue'
         <div class="auth__garantie">
           <BadgeCheck :size="16" /> Accès protégé par votre organisation
         </div>
+        <div class="auth__roles">
+          <span>Profils concernés</span>
+          <ul>
+            <li>Administrateur municipal</li>
+            <li>Agent communal</li>
+            <li>Agent maternité</li>
+            <li>Auditeur autorisé</li>
+          </ul>
+        </div>
       </div>
     </aside>
   </div>
