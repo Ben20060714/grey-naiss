@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ArrowRight, RotateCw, ShieldCheck } from 'lucide-vue-next'
+import { ArrowRight, House, RotateCw, ServerCrash } from 'lucide-vue-next'
 import { Head } from '@inertiajs/vue3'
 import MarketingLayout from '~/layouts/marketing.vue'
 
@@ -11,19 +11,35 @@ function recharger() {
 <template>
   <MarketingLayout>
     <Head title="Service momentanément indisponible" />
-    <main class="page-publique">
-      <section class="banniere-page">
-        <div class="conteneur">
-          <p class="sur-titre sur-titre--clair">Erreur 500 · Incident technique</p>
-          <h1>Une difficulté<br /><em>technique est survenue.</em></h1>
-          <p>
-            Le serveur de la mairie a rencontré une situation imprévue. Nos équipes sont informées
-            afin de rétablir le service au plus vite.
-          </p>
+    <main class="page-erreur-systeme">
+      <section class="page-erreur-systeme__hero" aria-labelledby="titre-erreur-500">
+        <div class="conteneur page-erreur-systeme__grille">
+          <div class="page-erreur-systeme__contenu">
+            <p class="sur-titre sur-titre--clair">Erreur 500 · Service temporaire</p>
+            <h1 id="titre-erreur-500">Une pause<br /><em>technique.</em></h1>
+            <p>
+              Le service de la mairie a rencontré une difficulté imprévue. Vous pouvez réessayer
+              maintenant ou revenir à l’accueil.
+            </p>
+            <button type="button" class="bouton bouton--clair" @click="recharger">
+              Réessayer <RotateCw :size="17" />
+            </button>
+          </div>
+          <div
+            class="page-erreur-systeme__badge page-erreur-systeme__badge--incident"
+            aria-hidden="true"
+          >
+            <span>500</span>
+            <ServerCrash :size="54" stroke-width="1.3" />
+            <small>Service momentanément indisponible</small>
+          </div>
         </div>
       </section>
 
-      <section class="section section--services" aria-labelledby="titre-resolution">
+      <section
+        class="section section--services page-erreur-systeme__actions"
+        aria-labelledby="titre-resolution"
+      >
         <div class="conteneur">
           <div class="entete-section">
             <div>
@@ -46,7 +62,7 @@ function recharger() {
 
             <a class="carte-service" href="/">
               <span class="carte-service__icone">
-                <ShieldCheck :size="21" />
+                <House :size="21" />
               </span>
               <span class="carte-service__titre">Retourner à l’accueil</span>
               <span class="carte-service__description">

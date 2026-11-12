@@ -890,6 +890,128 @@ input {
 .page-erreur span {
   color: var(--texte-municipal-secondaire);
 }
+
+/* Pages d’erreur — même langage visuel que le portail municipal. */
+.page-erreur-systeme {
+  min-height: 70vh;
+  background: var(--blanc-chaud);
+}
+.page-erreur-systeme__hero {
+  position: relative;
+  overflow: hidden;
+  padding: 168px 0 104px;
+  color: var(--blanc-chaud);
+  background:
+    radial-gradient(circle at 78% 28%, rgba(216, 155, 74, 0.2), transparent 24%),
+    linear-gradient(112deg, #0d354c, #174d69 58%, #1f5a70);
+}
+.page-erreur-systeme__hero::after {
+  position: absolute;
+  right: 8%;
+  bottom: -210px;
+  width: 440px;
+  height: 440px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 50%;
+  box-shadow: 0 0 0 42px rgba(255, 255, 255, 0.025);
+  content: '';
+}
+.page-erreur-systeme__grille {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 280px;
+  align-items: center;
+  gap: 64px;
+}
+.page-erreur-systeme__contenu {
+  max-width: 650px;
+}
+.page-erreur-systeme h1 {
+  max-width: 720px;
+  margin: 14px 0 22px;
+  font-family: var(--serif);
+  font-size: clamp(46px, 6vw, 72px);
+  font-weight: 400;
+  letter-spacing: -0.045em;
+  line-height: 0.98;
+}
+.page-erreur-systeme h1 em {
+  color: #f1c279;
+  font-style: italic;
+}
+.page-erreur-systeme__contenu > p:not(.sur-titre) {
+  max-width: 570px;
+  margin-bottom: 30px;
+  color: rgba(255, 253, 249, 0.76);
+  font-size: 17px;
+}
+.page-erreur-systeme__badge {
+  display: grid;
+  justify-items: center;
+  gap: 13px;
+  padding: 34px 24px;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 28px;
+  background: rgba(255, 253, 249, 0.08);
+  box-shadow: 0 24px 60px rgba(4, 26, 38, 0.18);
+  color: #f1c279;
+  backdrop-filter: blur(8px);
+}
+.page-erreur-systeme__badge span {
+  font-family: var(--mono);
+  font-size: 58px;
+  font-weight: 700;
+  letter-spacing: -0.08em;
+  line-height: 1;
+}
+.page-erreur-systeme__badge small {
+  max-width: 180px;
+  color: rgba(255, 253, 249, 0.7);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-align: center;
+  text-transform: uppercase;
+}
+.page-erreur-systeme__actions {
+  position: relative;
+  z-index: 1;
+}
+.page-erreur-systeme__actions .entete-section {
+  margin-bottom: 32px;
+}
+@media (max-width: 700px) {
+  .page-erreur-systeme__hero {
+    padding: 142px 0 76px;
+  }
+  .page-erreur-systeme__grille {
+    grid-template-columns: 1fr;
+    gap: 42px;
+  }
+  .page-erreur-systeme__badge {
+    justify-self: start;
+    width: min(100%, 250px);
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .page-erreur-systeme__contenu,
+  .page-erreur-systeme__badge {
+    animation: apparition-erreur 0.55s cubic-bezier(0.2, 0, 0, 1) both;
+  }
+  .page-erreur-systeme__badge {
+    animation-delay: 0.08s;
+  }
+}
+@keyframes apparition-erreur {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 /* Formulaire de déclaration — données conservées localement */
 .etiquette-locale {
   display: inline-flex;
@@ -1807,6 +1929,7 @@ input {
   width: 100%;
   max-width: 344px;
   padding: 20px 0;
+  animation: apparition-auth 0.45s cubic-bezier(0.2, 0, 0, 1) both;
 }
 .auth__form {
   display: flex;
@@ -1821,10 +1944,40 @@ input {
   letter-spacing: 0.2px;
   text-wrap: balance;
 }
+.auth__eyebrow {
+  margin-bottom: 9px;
+  color: var(--bleu-mairie);
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
 .auth__sub {
   color: var(--muted);
   font-size: 14px;
-  margin-top: 4px;
+  margin-top: 10px;
+  line-height: 1.6;
+}
+.auth__resume-erreur {
+  margin-top: 18px;
+  padding: 11px 13px;
+  border-left: 3px solid #c0392b;
+  background: #fff2ef;
+  color: #8e2c22;
+  font-size: 12.5px;
+  line-height: 1.45;
+}
+.auth__submit {
+  background: var(--bleu-profond);
+  color: var(--blanc-chaud);
+}
+.auth__submit:hover:not(:disabled) {
+  background: var(--bleu-mairie);
+  opacity: 1;
+}
+.auth__submit:disabled {
+  cursor: wait;
+  opacity: 0.58;
 }
 .auth__foot {
   margin-top: 18px;
@@ -1836,7 +1989,11 @@ input {
 .auth__aside {
   position: relative;
   border-left: 1px solid var(--line);
-  background: var(--paper);
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 82% 20%, rgba(216, 155, 74, 0.22), transparent 28%),
+    linear-gradient(145deg, var(--bleu-profond), var(--bleu-mairie));
+  color: var(--blanc-chaud);
   /* background-image: url(../inertia/assets/i1.jpg);
   background-position: center;
   background-repeat: no-repeat;
@@ -1845,6 +2002,17 @@ input {
   flex-direction: column;
   justify-content: space-between;
   padding: 44px;
+}
+.auth__aside::after {
+  position: absolute;
+  right: -130px;
+  bottom: -130px;
+  width: 390px;
+  height: 390px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 50%;
+  box-shadow: 0 0 0 38px rgba(255, 255, 255, 0.035);
+  content: '';
 }
 .auth__aside-top {
   display: flex;
@@ -1860,18 +2028,67 @@ input {
   text-wrap: balance;
   max-width: 22ch;
 }
+.auth__panneau-marque {
+  position: relative;
+  z-index: 1;
+  max-width: 380px;
+}
+.auth__panneau-icone {
+  display: grid;
+  width: 54px;
+  height: 54px;
+  place-items: center;
+  margin-bottom: 24px;
+  border: 1px solid rgba(255, 253, 249, 0.35);
+  border-radius: 50%;
+  color: #f1c279;
+}
+.auth__panneau-sur-titre {
+  margin-bottom: 12px;
+  color: #f1c279;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
 .pitch__t {
+  display: flex;
+  align-items: center;
+  gap: 7px;
   font-weight: 560;
   font-size: 15px;
   margin-bottom: 5px;
   letter-spacing: -0.01em;
 }
 .pitch__p {
-  color: var(--muted);
+  color: rgba(255, 253, 249, 0.7);
   font-size: 13.5px;
   line-height: 1.55;
   text-wrap: pretty;
   max-width: 36ch;
+}
+.auth__garantie {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin-top: 16px;
+  color: rgba(255, 253, 249, 0.86);
+  font-size: 12px;
+}
+@keyframes apparition-auth {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .auth__form-wrap {
+    animation: none;
+  }
 }
 .pitch__a {
   margin-top: 14px;
