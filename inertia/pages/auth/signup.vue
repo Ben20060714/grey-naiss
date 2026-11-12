@@ -6,11 +6,14 @@ import { Head } from '@inertiajs/vue3'
 
 <template>
   <AuthLayout>
-    <Head title="Inscription — Espace municipal" />
+    <Head title="Demander un accès — Espace municipal" />
     <p class="auth__eyebrow">Accès professionnel</p>
-    <h1 class="auth__title">Créer votre espace.</h1>
+    <h1 class="auth__title">Demander un accès.</h1>
     <p class="auth__sub">
-      Les comptes sont destinés aux agents et responsables habilités par la mairie.
+      Cette demande est réservée aux agents et responsables habilités par la mairie.
+    </p>
+    <p class="auth__notice">
+      Votre compte devra être vérifié et associé à un rôle autorisé avant l’accès aux dossiers.
     </p>
 
     <Form v-slot="{ processing, errors }" route="new_account.store">
@@ -113,7 +116,7 @@ import { Head } from '@inertiajs/vue3'
           :disabled="processing"
           :style="{ marginTop: '4px' }"
         >
-          {{ processing ? 'Inscription...' : "S'inscrire" }}
+          {{ processing ? 'Envoi de la demande…' : 'Envoyer la demande' }}
         </button>
       </div>
     </Form>

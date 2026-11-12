@@ -69,7 +69,7 @@ import { Head } from '@inertiajs/vue3'
 
     <p class="auth__foot">
       Vous n’avez pas encore de compte ?
-      <Link route="new_account.create" class="il">Créez-en un</Link>
+      <Link route="new_account.create" class="il">Demander un accès</Link>
     </p>
   </AuthLayout>
 </template>
