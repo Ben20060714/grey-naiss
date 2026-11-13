@@ -56,8 +56,19 @@ function determinerPageInitiale(): PagePublique {
 
 const pageActuelle = ref<PagePublique>(determinerPageInitiale())
 const conteneurPage = ref<HTMLElement | null>(null)
+const referenceActe = ref('')
+const messageVerification = ref('')
 const dureeTransition = 0.38
 let clePageAnimee = ''
+
+function verifierActe() {
+  if (!referenceActe.value.trim()) {
+    messageVerification.value = 'Saisissez la référence inscrite sur votre acte.'
+    return
+  }
+  messageVerification.value =
+    'Le service central de vérification est encore en préparation. Aucune donnée n’a été envoyée.'
+}
 
 function reduireLesAnimations() {
   return window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false
@@ -155,8 +166,8 @@ const services: Service[] = [
     ancre: '/?page=actualites',
   },
   {
-    titre: 'Signaler un problème',
-    description: 'Une rue, un éclairage ou un espace public à nous signaler.',
+    titre: 'Demander une orientation',
+    description: 'Une question ou une situation à orienter vers le service compétent.',
     icone: ShieldCheck,
     ancre: '/?page=contact',
   },
@@ -400,6 +411,29 @@ onBeforeUnmount(() => {
                   Un acte portant un QR code pourra être vérifié avec sa référence. Les informations
                   personnelles ne sont jamais affichées dans le QR code.
                 </p>
+                <form class="verification-publique__form" @submit.prevent="verifierActe">
+                  <label for="reference-acte">Référence de l’acte</label>
+                  <div>
+                    <input
+                      id="reference-acte"
+                      v-model.trim="referenceActe"
+                      type="text"
+                      placeholder="Ex. CERT-LUB-2026-00012345"
+                      aria-describedby="aide-reference-acte"
+                    />
+                    <button type="submit" class="bouton bouton--sombre">Vérifier</button>
+                  </div>
+                  <small id="aide-reference-acte"
+                    >La vérification sera activée avec le service central.</small
+                  >
+                  <p
+                    v-if="messageVerification"
+                    class="verification-publique__message"
+                    role="status"
+                  >
+                    {{ messageVerification }}
+                  </p>
+                </form>
               </div>
               <div class="verification-publique__etat">
                 <span class="point-etat" /> Service de vérification en préparation

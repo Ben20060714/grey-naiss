@@ -9,18 +9,19 @@ import { Clock3, Mail, MapPin, Phone } from 'lucide-vue-next'
         <!-- <p class="sur-titre sur-titre--clair">Accueil municipal</p> -->
         <h1>Contacter la<br /><em>mairie de Lubumbashi.</em></h1>
         <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Distinctio voluptates sunt excepturi aliquam..
+          Une question sur une démarche, un service ou une actualité municipale ? La mairie vous
+          oriente.
         </p>
       </div>
     </section>
-    <section class="section section--contact">
+    <section id="contact-actualite" class="section section--contact">
       <div class="conteneur contact-page">
         <div>
           <p class="sur-titre sur-titre--sombre">Nous vous orientons</p>
           <h2>Une question sur une démarche ?</h2>
           <p class="contact-page__intro">
-            Pour les dossiers d’état civil, veuillez vous munir de votre/vos pièce(s) d'identité et vous adresser
-            au bureau compétent.
+            Pour les dossiers d’état civil, veuillez vous munir de votre/vos pièce(s) d'identité et
+            vous adresser au bureau compétent.
           </p>
         </div>
         <div class="liste-coordonnees">
@@ -34,8 +35,8 @@ import { Clock3, Mail, MapPin, Phone } from 'lucide-vue-next'
           <div>
             <span><Clock3 :size="18" /></span>
             <div>
-              <strong>Heures de lorem</strong>
-              <p>Lorem ipsum dolor sit</p>
+              <strong>Horaires d’accueil</strong>
+              <p>Les horaires seront publiés par la mairie.</p>
             </div>
           </div>
           <div>
