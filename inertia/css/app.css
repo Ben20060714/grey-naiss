@@ -310,6 +310,10 @@ input {
   display: none;
   color: inherit;
 }
+.contenu-public {
+  min-height: 100vh;
+  background: var(--blanc-chaud);
+}
 
 .bouton {
   display: inline-flex;
@@ -890,6 +894,13 @@ input {
 .page-erreur span {
   color: var(--texte-municipal-secondaire);
 }
+.page-erreur__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 16px;
+}
 
 /* Pages d’erreur — même langage visuel que le portail municipal. */
 .page-erreur-systeme {
@@ -1345,6 +1356,47 @@ input {
   color: #626c6a;
   font-size: 13px;
 }
+.verification-publique__form {
+  max-width: 620px;
+  margin-top: 18px;
+}
+.verification-publique__form > label {
+  display: block;
+  margin-bottom: 7px;
+  color: var(--bleu-profond);
+  font-size: 12px;
+  font-weight: 600;
+}
+.verification-publique__form > div {
+  display: flex;
+  gap: 9px;
+}
+.verification-publique__form input {
+  min-width: 0;
+  flex: 1;
+  height: 44px;
+  padding: 0 13px;
+  border: 1px solid var(--bordure-municipale);
+  border-radius: 999px;
+  background: var(--blanc-chaud);
+  color: var(--texte-municipal);
+}
+.verification-publique__form input:focus {
+  outline: none;
+  border-color: var(--bleu-mairie);
+  box-shadow: 0 0 0 3px rgba(18, 63, 89, 0.14);
+}
+.verification-publique__form small {
+  display: block;
+  margin-top: 7px;
+  color: var(--texte-municipal-secondaire);
+  font-size: 11px;
+}
+.verification-publique__message {
+  margin-top: 9px;
+  color: var(--texte-municipal) !important;
+  font-weight: 600;
+}
 .verification-publique__etat {
   display: inline-flex;
   align-items: center;
@@ -1361,6 +1413,15 @@ input {
   height: 7px;
   border-radius: 50%;
   background: #d29a43;
+}
+@media (max-width: 700px) {
+  .verification-publique__form > div {
+    align-items: stretch;
+    flex-direction: column;
+  }
+  .verification-publique__form .bouton {
+    width: 100%;
+  }
 }
 /* Les sections publiques doivent s’enchaîner sans laisser apparaître le fond du body. */
 .accueil-hero ~ .section,
@@ -2430,12 +2491,6 @@ input {
   }
 }
 
-/* Surcharge finale : aucune marge sombre entre les sections publiques. */
-.accueil-hero ~ .section,
-.page-publique .section + .section {
-  margin-top: 0;
-  border-top: 0;
-}
 /* Palette des surfaces municipales, partagée par les deux thèmes. */
 :root {
   --surface-municipale: #fffdf9;
