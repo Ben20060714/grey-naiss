@@ -39,6 +39,7 @@ tmp@/
 # Operating system files
 .DS_Store
 Thumbs.db
+tmp/db.sqlite3
 
 # Images en hors ligne
 i*.jpg
