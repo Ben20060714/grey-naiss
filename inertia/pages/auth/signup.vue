@@ -41,6 +41,49 @@ import { Head } from '@inertiajs/vue3'
         </div>
 
         <div class="field">
+          <label class="field__label" for="poste">Poste</label>
+          <input
+            id="poste"
+            name="poste"
+            type="text"
+            class="field__input"
+            autocomplete="organization-title"
+            placeholder="Ex. Agent administratif"
+            required
+            aria-required="true"
+            :aria-describedby="errors.poste ? 'erreur-poste' : undefined"
+            :aria-invalid="errors.poste ? 'true' : 'false'"
+          />
+          <span v-if="errors.poste" id="erreur-poste" class="field__error" role="alert">
+            {{ errors.poste }}
+          </span>
+        </div>
+
+        <div class="field">
+          <label class="field__label" for="etablissement">Établissement</label>
+          <input
+            id="etablissement"
+            name="etablissement"
+            type="text"
+            class="field__input"
+            autocomplete="organization"
+            placeholder="Ex. Mairie de Lubumbashi"
+            required
+            aria-required="true"
+            :aria-describedby="errors.etablissement ? 'erreur-etablissement' : undefined"
+            :aria-invalid="errors.etablissement ? 'true' : 'false'"
+          />
+          <span
+            v-if="errors.etablissement"
+            id="erreur-etablissement"
+            class="field__error"
+            role="alert"
+          >
+            {{ errors.etablissement }}
+          </span>
+        </div>
+
+        <div class="field">
           <label class="field__label" for="email">Adresse e-mail</label>
           <input
             id="email"
