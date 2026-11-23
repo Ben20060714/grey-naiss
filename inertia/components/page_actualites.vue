@@ -3,22 +3,24 @@ import { ArrowRight, CalendarDays } from 'lucide-vue-next'
 
 const actualites = [
   {
-    date: '30 juin 2027',
+    date: '30 juin 2026',
     categorie: 'Fête nationale',
-    titre: 'Lorem ipsum dolor sit amet adipiscing elit quam lori tali mbe ehtio.',
-    description: 'Lorem ipsum dolor sit amet',
+    titre: 'La ville prépare ses prochaines rencontres citoyennes.',
+    description:
+      'Les habitants pourront prochainement découvrir les rendez-vous municipaux à venir.',
   },
   {
-    date: '06 juillet 2027',
+    date: '06 juillet 2026',
     categorie: 'Vie locale',
-    titre: 'Lorem ipsum dolor sit amet adipiscing elit quam lori tali mbe ehtio',
-    description: 'Lorem ipsum dolor sit amet adipiscing elit quam lori tali mbe ehtio como pomodoro laq um guit.',
+    titre: 'Les initiatives locales au cœur de la vie municipale.',
+    description: 'La mairie met en avant les actions qui rapprochent les services des habitants.',
   },
   {
-    date: '28 mai 2028',
+    date: '28 mai 2026',
     categorie: 'Information',
-    titre: 'Lorem ipsum dolor sit amet adipiscing elit quam lori tali mbe ehtio',
-    description: 'Lorem ipsum dolor sit amet adipiscing elit quam lori tali mbe ehtio.',
+    titre: 'Les démarches d’état civil mieux expliquées.',
+    description:
+      'Retrouvez les pièces et les étapes utiles avant votre passage au bureau compétent.',
   },
 ]
 </script>
@@ -29,7 +31,7 @@ const actualites = [
       <div class="conteneur">
         <!-- <p class="sur-titre sur-titre--clair">La vie de la ville</p> -->
         <h1>Prenez les dernières nouvelles de la ville de<br /><em>Lubumbashi.</em></h1>
-        <p>Lorem ipsum dolor sit amet adipiscing elit quam lori tali mbe ehtio</p>
+        <p>Les informations municipales et les rendez-vous utiles de la ville.</p>
       </div>
     </section>
     <section class="section section--actualites">
@@ -50,7 +52,12 @@ const actualites = [
               <p class="carte-actualite__meta">{{ actualite.categorie }} · {{ actualite.date }}</p>
               <h3>{{ actualite.titre }}</h3>
               <p>{{ actualite.description }}</p>
-              <a class="lien-souligne" href="/?page=contact">Demander une information <ArrowRight :size="15"/></a>
+              <a
+                class="lien-souligne"
+                href="/?page=contact#contact-actualite"
+                :aria-label="`Demander une information sur : ${actualite.titre}`"
+                >Demander une information <ArrowRight :size="15"
+              /></a>
             </div>
           </article>
         </div>

@@ -57,7 +57,9 @@ function fermerMenu() {
       </nav>
     </div>
   </header>
-  <slot />
+  <div class="contenu-public">
+    <slot />
+  </div>
   <footer class="pied-de-page">
     <div class="conteneur pied-de-page__interieur">
       <Logo :size="30" />

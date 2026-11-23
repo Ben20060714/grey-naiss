@@ -17,19 +17,19 @@ import AppLayout from '~/layouts/app.vue'
       <div class="tableau-agent">
         <article class="indicateur-agent">
           <span class="indicateur-agent__icone"><FilePlus2 :size="18" /></span
-          ><span>Déclarations aujourd’hui</span><strong>24</strong>
+          ><span>Déclarations aujourd’hui</span><strong>Local</strong>
         </article>
         <article class="indicateur-agent">
           <span class="indicateur-agent__icone"><Activity :size="18" /></span
-          ><span>Dossiers en attente</span><strong>5</strong>
+          ><span>Dossiers en attente</span><strong>Non disponible</strong>
         </article>
         <article class="indicateur-agent">
           <span class="indicateur-agent__icone"><ShieldAlert :size="18" /></span
-          ><span>Correspondances à vérifier</span><strong>2</strong>
+          ><span>Correspondances à vérifier</span><strong>Non disponible</strong>
         </article>
         <article class="indicateur-agent indicateur-agent--hors-ligne">
           <span class="indicateur-agent__icone"><CloudOff :size="18" /></span
-          ><span>État de synchronisation</span><strong>Hors ligne</strong>
+          ><span>État de synchronisation</span><strong>Local uniquement</strong>
         </article>
       </div>
       <FormulaireDeclaration />
