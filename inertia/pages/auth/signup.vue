@@ -49,8 +49,6 @@ import { Head } from '@inertiajs/vue3'
             class="field__input"
             autocomplete="organization-title"
             placeholder="Ex. Agent administratif"
-            required
-            aria-required="true"
             :aria-describedby="errors.poste ? 'erreur-poste' : undefined"
             :aria-invalid="errors.poste ? 'true' : 'false'"
           />
@@ -68,8 +66,6 @@ import { Head } from '@inertiajs/vue3'
             class="field__input"
             autocomplete="organization"
             placeholder="Ex. Mairie de Lubumbashi"
-            required
-            aria-required="true"
             :aria-describedby="errors.etablissement ? 'erreur-etablissement' : undefined"
             :aria-invalid="errors.etablissement ? 'true' : 'false'"
           />
@@ -81,6 +77,12 @@ import { Head } from '@inertiajs/vue3'
           >
             {{ errors.etablissement }}
           </span>
+        </div>
+
+        <div class="field">
+          <label class="field__label" for="role">Rôle</label>
+          <input id="role" type="text" class="field__input" value="Employé" disabled />
+          <p class="auth__notice">Le rôle est attribué par l’administration après vérification.</p>
         </div>
 
         <div class="field">

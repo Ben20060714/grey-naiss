@@ -16,6 +16,7 @@ export default class NewAccountController {
       etablissement,
       email,
       password,
+      role: 'employé',
       validate: false,
     })
 
